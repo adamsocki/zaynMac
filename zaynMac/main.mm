@@ -65,17 +65,20 @@ void setupMetal() {
     metalLayer.device = device;
 }
 
+struct Vertex {
+    vector_float2 position;
+    vector_float4 color;
+};
+
 void InitTriangle() {
-    struct Vertex {
-        vector_float2 position;
-        vector_float4 color;
-    };
+    
 
     Vertex triangleVertices[] = {
         { { 0.0f,  0.5f }, { 1.0f, 0.0f, 0.0f, 1.0f } },  // Top vertex (red)
-        { { -0.5f, -0.5f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // Bottom left vertex (green)
-        { { 0.5f, -0.5f }, { 0.0f, 0.0f, 1.0f, 1.0f } }   // Bottom right vertex (blue)
+        { { -0.5f, -0.5f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // Bottom left vertex (red)
+        { { 0.5f, -0.5f }, { 0.0f, 0.0f, 1.0f, 1.0f } }   // Bottom right vertex (red)
     };
+
 
     vertexBuffer = [device newBufferWithBytes:triangleVertices
                                        length:sizeof(triangleVertices)
@@ -93,7 +96,7 @@ void InitTriangle() {
     vertexDescriptor.attributes[0].bufferIndex = 0;
 
     vertexDescriptor.attributes[1].format = MTLVertexFormatFloat4; // color
-    vertexDescriptor.attributes[1].offset = sizeof(vector_float2);
+    vertexDescriptor.attributes[1].offset = sizeof(vector_float4);
     vertexDescriptor.attributes[1].bufferIndex = 0;
 
     vertexDescriptor.layouts[0].stride = sizeof(Vertex);
@@ -103,7 +106,7 @@ void InitTriangle() {
     MTLRenderPipelineDescriptor *pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     pipelineDescriptor.vertexFunction = vertexFunction;
     pipelineDescriptor.fragmentFunction = fragmentFunction;
-    pipelineDescriptor.colorAttachments[0].pixelFormat = metalLayer.pixelFormat;
+    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
     pipelineDescriptor.vertexDescriptor = vertexDescriptor;
 
     pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
@@ -121,8 +124,8 @@ void RenderTriangle() {
         MTLRenderPassDescriptor *passDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
         passDescriptor.colorAttachments[0].texture = drawable.texture;
         passDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
-        passDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.2, 0.6, 1.0, 1.0);
-        passDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+        passDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0);
+        
 
         id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
         id<MTLRenderCommandEncoder> encoder = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor];
@@ -142,7 +145,7 @@ void RenderTriangle() {
 void render() {
     @autoreleasepool {
         
-        updateGame();
+        RenderTriangle();
     }
 }
 
