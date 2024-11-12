@@ -11,6 +11,7 @@
 
 
 #import "zayn.hpp"
+
 #import <simd/simd.h>
 
 NSApplication *app;
@@ -31,7 +32,7 @@ void RenderTriangle();
 int main() {
     setupWindow();
     setupMetal();
-    initializeGame();
+    InitializeGame();
     runApp();
     return 0;
 }
@@ -145,7 +146,7 @@ void RenderTriangle() {
 void render() {
     @autoreleasepool {
         
-        RenderTriangle();
+        UpdateGame();
     }
 }
 

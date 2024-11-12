@@ -12,8 +12,18 @@
 
 #include <stdio.h>
 
-void initializeGame();
-void updateGame();
+
+#include "my_memory.hpp"
+
+
+struct ZaynMemory
+{
+    MemoryArena permanentMemArena;
+    MemoryArena frameMemArena;
+};
+
+void InitializeGame();
+void UpdateGame();
 
 
 #endif /* zayn_hpp */

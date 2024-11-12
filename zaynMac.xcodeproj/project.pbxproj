@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E46ADDE2CE3FB9C0014573A /* dynamic_array.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */; };
+		5E46ADE12CE3FBC50014573A /* my_memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46ADDF2CE3FBC50014573A /* my_memory.cpp */; };
 		5E53CD832CE3C83C00B77592 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E53CD822CE3C83C00B77592 /* Foundation.framework */; };
 		5E53CD862CE3C8EC00B77592 /* render_triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E53CD842CE3C8EC00B77592 /* render_triangle.cpp */; };
 		5E53CD892CE3CEBB00B77592 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 5E53CD882CE3CEBB00B77592 /* Shaders.metal */; };
@@ -31,6 +33,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dynamic_array.cpp; sourceTree = "<group>"; };
+		5E46ADDD2CE3FB9C0014573A /* dynamic_array.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dynamic_array.hpp; sourceTree = "<group>"; };
+		5E46ADDF2CE3FBC50014573A /* my_memory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = my_memory.cpp; sourceTree = "<group>"; };
+		5E46ADE02CE3FBC50014573A /* my_memory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = my_memory.hpp; sourceTree = "<group>"; };
+		5E46ADE22CE3FBEF0014573A /* data_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = data_types.h; sourceTree = "<group>"; };
 		5E53CD1A2CE3C81200B77592 /* Foundation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Foundation.hpp; sourceTree = "<group>"; };
 		5E53CD1B2CE3C81200B77592 /* NSArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NSArray.hpp; sourceTree = "<group>"; };
 		5E53CD1C2CE3C81200B77592 /* NSAutoreleasePool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NSAutoreleasePool.hpp; sourceTree = "<group>"; };
@@ -340,6 +347,11 @@
 				5E53CD842CE3C8EC00B77592 /* render_triangle.cpp */,
 				5E53CD852CE3C8EC00B77592 /* render_triangle.hpp */,
 				5E53CD8A2CE3CF1100B77592 /* render_triangle.m */,
+				5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */,
+				5E46ADDD2CE3FB9C0014573A /* dynamic_array.hpp */,
+				5E46ADDF2CE3FBC50014573A /* my_memory.cpp */,
+				5E46ADE02CE3FBC50014573A /* my_memory.hpp */,
+				5E46ADE22CE3FBEF0014573A /* data_types.h */,
 			);
 			path = zaynMac;
 			sourceTree = "<group>";
@@ -416,8 +428,10 @@
 				5E53CD892CE3CEBB00B77592 /* Shaders.metal in Sources */,
 				5E53CD8B2CE3CF1100B77592 /* render_triangle.m in Sources */,
 				5E53CD862CE3C8EC00B77592 /* render_triangle.cpp in Sources */,
+				5E46ADDE2CE3FB9C0014573A /* dynamic_array.cpp in Sources */,
 				5E95F76E2CE3B4EC005705D3 /* main.mm in Sources */,
 				5EEC0E0C2CE3B63A00CE7410 /* zayn.cpp in Sources */,
+				5E46ADE12CE3FBC50014573A /* my_memory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
