@@ -14,12 +14,16 @@
 
 
 #include "my_memory.hpp"
+#include "input.hpp"
 
 
 struct ZaynMemory
 {
     MemoryArena permanentMemArena;
     MemoryArena frameMemArena;
+    
+    InputManager inputManager;
+    InputDevice* keyboard;
 };
 
 void InitializeGame();

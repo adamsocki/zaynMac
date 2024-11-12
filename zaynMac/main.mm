@@ -55,6 +55,7 @@ void setupWindow() {
     metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
     metalLayer.framebufferOnly = YES;
     metalLayer.frame = frame;
+//    metalLayer.displaySyncEnabled = NO;
     [window.contentView setLayer:metalLayer];
     [window.contentView setWantsLayer:YES];
 }
