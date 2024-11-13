@@ -11,10 +11,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
         
-        setupWindow();
-        setupMetal();
-        InitTriangle();
-//    InitializeGame();
+    setupWindow();
+    setupMetal();
+    InitTriangle();
+    InitializeGame();
 //    UpdateGame();
     //[self performSelectorOnMainThread:@selector(startRenderLoop) withObject:nil waitUntilDone:NO];
 //        [self gameLoop];

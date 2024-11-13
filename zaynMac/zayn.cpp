@@ -27,13 +27,13 @@ void InitializeGame() {
 //    Zayn = &zaynMemory;
     
     
-//    AllocateMemoryArena(&zaynMemory.permanentMemArena, Megabytes(256));
-//    AllocateMemoryArena(&zaynMemory.frameMemArena, Megabytes(32));
+    AllocateMemoryArena(&zaynMemory.permanentMemArena, Megabytes(256));
+    AllocateMemoryArena(&zaynMemory.frameMemArena, Megabytes(32));
 
-//    InputManager* inputManager = &Zayn->inputManager;
+    InputManager* inputManager = &Zayn->inputManager;
 
 
-    //AllocateInputManager(inputManager, &Zayn->permanentMemArena, 4);
+//    AllocateInputManager(inputManager, &Zayn->permanentMemArena, 4);
         
 //    zaynMemory.keyboard = &inputManager->devices[0];
     //AllocateInputDevice(Zayn->keyboard, InputDeviceType_Keyboard, Input_KeyboardDiscreteCount, 0);

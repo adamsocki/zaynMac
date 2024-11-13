@@ -14,7 +14,6 @@
 //
 //
 
-//#include "input.hpp"
 //
 //
 
@@ -25,6 +24,7 @@
 #include "data_types.h"
 #include "my_memory.hpp"
 //struct MemoryArena;
+#include "input.hpp"
 
 struct ZaynMemory
 {
@@ -32,7 +32,8 @@ struct ZaynMemory
     MemoryArena permanentMemArena;
     MemoryArena frameMemArena;
 
-//    InputManager inputManager;
+    InputManager inputManager;
+    
 //    InputDevice* keyboard;
 };
 

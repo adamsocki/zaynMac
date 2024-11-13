@@ -117,7 +117,7 @@ void InitTriangle() {
 }
 
 void RenderTriangle() {
-    NSLog(@"HHH");
+//    NSLog(@"HHH");
     @autoreleasepool {
         id<CAMetalDrawable> drawable = [metalLayer nextDrawable];
         if (!drawable) return;
