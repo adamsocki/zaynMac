@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E1983C82CE4466A0003C82D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983C72CE4466A0003C82D /* AppDelegate.m */; };
+		5E1983CC2CE446F60003C82D /* MetalSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983CB2CE446F60003C82D /* MetalSetup.m */; };
+		5E1983CE2CE447600003C82D /* ZaynView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983CD2CE447600003C82D /* ZaynView.m */; };
 		5E46ADDE2CE3FB9C0014573A /* dynamic_array.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */; };
 		5E46ADE12CE3FBC50014573A /* my_memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46ADDF2CE3FBC50014573A /* my_memory.cpp */; };
 		5E4B18EB2CE40336007528E3 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E4B18E92CE40336007528E3 /* input.cpp */; };
@@ -34,6 +37,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E1983C72CE4466A0003C82D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5E1983C92CE4469D0003C82D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5E1983CA2CE446CF0003C82D /* MetalSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalSetup.h; sourceTree = "<group>"; };
+		5E1983CB2CE446F60003C82D /* MetalSetup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetalSetup.m; sourceTree = "<group>"; };
+		5E1983CD2CE447600003C82D /* ZaynView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZaynView.m; sourceTree = "<group>"; };
+		5E1983CF2CE447850003C82D /* ZaynView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ZaynView.hpp; sourceTree = "<group>"; };
 		5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dynamic_array.cpp; sourceTree = "<group>"; };
 		5E46ADDD2CE3FB9C0014573A /* dynamic_array.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dynamic_array.hpp; sourceTree = "<group>"; };
 		5E46ADDF2CE3FBC50014573A /* my_memory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = my_memory.cpp; sourceTree = "<group>"; };
@@ -342,6 +351,7 @@
 		5E95F76C2CE3B4EC005705D3 /* zaynMac */ = {
 			isa = PBXGroup;
 			children = (
+				5E1983C72CE4466A0003C82D /* AppDelegate.m */,
 				5E53CD872CE3CE9D00B77592 /* render */,
 				5E53CD812CE3C81200B77592 /* metal-cpp */,
 				5E95F76D2CE3B4EC005705D3 /* main.mm */,
@@ -357,6 +367,11 @@
 				5E46ADE22CE3FBEF0014573A /* data_types.h */,
 				5E4B18E92CE40336007528E3 /* input.cpp */,
 				5E4B18EA2CE40336007528E3 /* input.hpp */,
+				5E1983C92CE4469D0003C82D /* AppDelegate.h */,
+				5E1983CA2CE446CF0003C82D /* MetalSetup.h */,
+				5E1983CB2CE446F60003C82D /* MetalSetup.m */,
+				5E1983CD2CE447600003C82D /* ZaynView.m */,
+				5E1983CF2CE447850003C82D /* ZaynView.hpp */,
 			);
 			path = zaynMac;
 			sourceTree = "<group>";
@@ -432,12 +447,15 @@
 			files = (
 				5E53CD892CE3CEBB00B77592 /* Shaders.metal in Sources */,
 				5E53CD8B2CE3CF1100B77592 /* render_triangle.m in Sources */,
+				5E1983C82CE4466A0003C82D /* AppDelegate.m in Sources */,
 				5E4B18EB2CE40336007528E3 /* input.cpp in Sources */,
 				5E53CD862CE3C8EC00B77592 /* render_triangle.cpp in Sources */,
 				5E46ADDE2CE3FB9C0014573A /* dynamic_array.cpp in Sources */,
 				5E95F76E2CE3B4EC005705D3 /* main.mm in Sources */,
+				5E1983CE2CE447600003C82D /* ZaynView.m in Sources */,
 				5EEC0E0C2CE3B63A00CE7410 /* zayn.cpp in Sources */,
 				5E46ADE12CE3FBC50014573A /* my_memory.cpp in Sources */,
+				5E1983CC2CE446F60003C82D /* MetalSetup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
