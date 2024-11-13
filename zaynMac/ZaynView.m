@@ -12,20 +12,20 @@
 #import "ZaynView.hpp"
 
 @implementation ZaynView
-//
-//- (BOOL)acceptsFirstResponder {
-//    return YES;
-//}
-//
-//- (void)keyDown:(NSEvent *)event {
-//    NSString *characters = [event charactersIgnoringModifiers];
-//    unichar key = [characters characterAtIndex:0];
-//
-//    if (key == 'w' || key == 'W') {
-//        NSLog(@"W key pressed");
-//    } else if (key == 's' || key == 'S') {
-//        NSLog(@"S key pressed");
-//    }
-//}
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
+- (void)keyDown:(NSEvent *)event {
+    NSString *characters = [event charactersIgnoringModifiers];
+    unichar key = [characters characterAtIndex:0];
+
+    if (key == 'w' || key == 'W') {
+        NSLog(@"W key pressed");
+    } else if (key == 's' || key == 'S') {
+        NSLog(@"S key pressed");
+    }
+}
 
 @end
