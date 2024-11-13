@@ -13,19 +13,28 @@
 //#include <stdio.h>
 //
 //
-//#include "my_memory.hpp"
+
 //#include "input.hpp"
 //
 //
-//struct ZaynMemory
-//{
-//    MemoryArena permanentMemArena;
-//    MemoryArena frameMemArena;
-//    
+
+#pragma once
+
+
+//#include "my_memory.hpp"
+#include "data_types.h"
+#include "my_memory.hpp"
+//struct MemoryArena;
+
+struct ZaynMemory
+{
+    int32 testInt;
+    MemoryArena permanentMemArena;
+    MemoryArena frameMemArena;
+
 //    InputManager inputManager;
 //    InputDevice* keyboard;
-//};
-#pragma once
+};
 
 #ifdef __cplusplus
 extern "C" {

@@ -15,13 +15,15 @@
 #include <iostream>
 
 
-//ZaynMemory* Zayn = NULL;
-//
+ZaynMemory* Zayn = NULL;
+
 void InitializeGame() {
     // Initialize game state, load resources, etc.
     std::cout << "Game initialized!" << std::endl;
     
-//    ZaynMemory zaynMemory = {};
+    ZaynMemory zaynMemory = {};
+    zaynMemory.testInt = 20;
+    int32 test2 = 22;
 //    Zayn = &zaynMemory;
     
     

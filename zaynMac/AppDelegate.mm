@@ -1,5 +1,5 @@
 
-// AppDelegate.m
+// AppDelegate.mm
 #import "AppDelegate.h"
 #import "MetalSetup.h"
 #import "zayn.hpp"

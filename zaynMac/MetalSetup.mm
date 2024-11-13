@@ -46,7 +46,7 @@ void setupWindow()
     metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
     metalLayer.framebufferOnly = YES;
     metalLayer.frame = frame;
-    metalLayer.displaySyncEnabled = YES; // Disable vsync
+    metalLayer.displaySyncEnabled = NO; // Disable vsync
     
     // Create custom view and set as content view
     ZaynView *zaynView = [[ZaynView alloc] initWithFrame:frame];
@@ -71,6 +71,8 @@ struct Vertex {
     vector_float2 position;
     vector_float4 color;
 };
+
+
 
 void InitTriangle() {
     struct Vertex triangleVertices[] = {

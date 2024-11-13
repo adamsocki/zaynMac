@@ -1,15 +1,15 @@
+////
+////  my_memory.hpp
+////  zaynMac
+////
+////  Created by socki on 11/12/24.
+////
 //
-//  my_memory.hpp
-//  zaynMac
-//
-//  Created by socki on 11/12/24.
-//
-
 #ifndef my_memory_hpp
 #define my_memory_hpp
-
+//
 #include <stdio.h>
-
+//
 #include "data_types.h"
 
 

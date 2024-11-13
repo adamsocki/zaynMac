@@ -22,5 +22,5 @@
 //    id<MTLBuffer> vertexBuffer;
    // CAMetalLayer *metalLayer;
 }
-- (void)gameLoop;
+- (void)startRenderLoop;
 @end

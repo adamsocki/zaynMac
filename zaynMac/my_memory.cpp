@@ -1,10 +1,10 @@
-//
-//  my_memory.cpp
-//  zaynMac
-//
-//  Created by socki on 11/12/24.
-//
-
+//////
+//////  my_memory.cpp
+//////  zaynMac
+//////
+//////  Created by socki on 11/12/24.
+//////
+////
 #include "my_memory.hpp"
 #include <iostream>
 
