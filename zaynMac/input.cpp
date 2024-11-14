@@ -10,6 +10,7 @@
 #include <stdlib.h> // pulls in declaration of malloc, free
 #include <string.h> // pulls in declaration for strlen.
 #include <iostream>
+#include "zayn.hpp"
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity)
 {
@@ -108,4 +109,13 @@ InputKeyboardDiscrete GetInputKeyFromVirtualKey(unsigned short keyCode)
              default: return Input_Invalid;
     }
 
+}
+
+
+void InputRegister(InputKeyboardDiscrete inputKey)
+{
+    InputEvent inputEvent = {};
+    inputEvent.device = Zayn->keyboard;
+    inputEvent.index = inputKey;
+    inputEvent.discreteValue = true;
 }

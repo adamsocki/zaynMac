@@ -31,25 +31,23 @@
 
 - (void)keyDown:(NSEvent *)event
 {
-    [self processKeyEvent:event isKeyDown:YES];
-    
-    
-    
-    //    GetInputKeyFromVirtualKey([event keyCode]);
-    
-    NSString *characters = [event charactersIgnoringModifiers];
-    if ([characters length] > 0)
-    {
+    unsigned short keyCode = [event keyCode];
+        InputKeyboardDiscrete inputKey = GetInputKeyFromVirtualKey(keyCode);
         
-                
-    }
-    
-        
-    //    if (key == 'w' || key == 'W') {
-    //        NSLog(@"W key pressed");
-    //    } else if (key == 's' || key == 'S') {
-    //        NSLog(@"S key pressed");
-    //    }
+        if (inputKey != Input_Invalid) {
+            
+            InputRegister(inputKey);
+            
+//            InputEvent inputEvent = {};
+//            inputEvent.device = Zayn->keyboard;
+//            inputEvent.index = inputKey;
+//            inputEvent.discreteValue = true;  // Key is pressed
+//            PushBack(&Zayn->inputManager->events, inputEvent);
+//            
+            #if DEBUG
+            NSLog(@"Key pressed: %d -> %d", keyCode, inputKey);
+            #endif
+        }
 }
 
 - (void)keyUp:(NSEvent *)event {

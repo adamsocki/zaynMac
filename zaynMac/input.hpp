@@ -176,6 +176,7 @@ struct InputManager
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity);
 void AllocateInputDevice(InputDevice *device, InputDeviceType type, int32 discreteCount, int32 analogueCount);
+void InputRegister(InputKeyboardDiscrete inputKey);
 
 
 #endif /* input_hpp */

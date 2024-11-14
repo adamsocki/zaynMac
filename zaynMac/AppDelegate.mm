@@ -8,6 +8,7 @@
 @implementation AppDelegate
 
 
+//ZaynMemory* Zayn = NULL;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
         

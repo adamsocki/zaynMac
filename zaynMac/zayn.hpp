@@ -47,6 +47,7 @@ struct ZaynMemory
 extern "C" {
 #endif
 
+extern ZaynMemory* Zayn;
 void InitializeGame();
 void UpdateLoop();
 void CleanUpZayn();
