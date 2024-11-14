@@ -25,6 +25,7 @@
 
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    CleanUpZayn();
     return YES;
 }
 

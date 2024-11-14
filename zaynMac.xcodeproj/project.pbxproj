@@ -37,6 +37,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E049C042CE6677F006FC5BC /* time.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = time.hpp; sourceTree = "<group>"; };
 		5E1983C72CE4466A0003C82D /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		5E1983C92CE4469D0003C82D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5E1983CA2CE446CF0003C82D /* MetalSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalSetup.h; sourceTree = "<group>"; };
@@ -351,6 +352,7 @@
 		5E95F76C2CE3B4EC005705D3 /* zaynMac */ = {
 			isa = PBXGroup;
 			children = (
+				5E049C042CE6677F006FC5BC /* time.hpp */,
 				5E1983C72CE4466A0003C82D /* AppDelegate.mm */,
 				5E53CD872CE3CE9D00B77592 /* render */,
 				5E53CD812CE3C81200B77592 /* metal-cpp */,

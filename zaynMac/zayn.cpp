@@ -23,21 +23,21 @@ void InitializeGame() {
     std::cout << "Game initialized!" << std::endl;
     
     ZaynMemory zaynMemory = {};
-    zaynMemory.testInt = 20;
-    int32 test2 = 22;
-//    Zayn = &zaynMemory;
+//    zaynMemory.testInt = 20;
+//    int32 test2 = 22;
+    Zayn = &zaynMemory;
     
     
-    AllocateMemoryArena(&zaynMemory.permanentMemArena, Megabytes(256));
-    AllocateMemoryArena(&zaynMemory.frameMemArena, Megabytes(32));
+    AllocateMemoryArena(&Zayn->permanentMemArena, Megabytes(256));
+    AllocateMemoryArena(&Zayn->frameMemArena, Megabytes(32));
 
-    InputManager* inputManager = &zaynMemory.inputManager;
+    InputManager* inputManager = &Zayn->inputManager;
 
 
-    AllocateInputManager(inputManager, &zaynMemory.permanentMemArena, 4);
+    AllocateInputManager(inputManager, &Zayn->permanentMemArena, 4);
         
-//    zaynMemory.keyboard = &inputManager->devices[0];
-    //AllocateInputDevice(Zayn->keyboard, InputDeviceType_Keyboard, Input_KeyboardDiscreteCount, 0);
+    Zayn->keyboard = &inputManager->devices[0];
+    AllocateInputDevice(Zayn->keyboard, InputDeviceType_Keyboard, Input_KeyboardDiscreteCount, 0);
         
     //Keyboard = zaynMemory->keyboard;
     //InitializeKeyMap();
@@ -51,4 +51,13 @@ void UpdateGame() {
 //    while 
     std::cout << "Game updated!" << std::endl;
 //    RenderTriangle();
+}
+
+void CleanUpZayn()
+{
+    if (Zayn)
+    {
+        free(Zayn);
+        Zayn = NULL;
+    }
 }
