@@ -12,6 +12,7 @@
 
 #include "data_types.h"
 #include "dynamic_array.hpp"
+#include "my_memory.hpp"
 
 enum InputDeviceType
 {
@@ -52,12 +53,14 @@ struct InputManager
     int32 deviceCount;
     InputDevice* devices;
 
-   // DynamicArray<InputEvent> events;
+    DynamicArray<InputEvent> events;
 
     uint32 charCount;
 
 
 
 };
+
+void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity);
 
 #endif /* input_hpp */

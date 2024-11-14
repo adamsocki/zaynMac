@@ -46,7 +46,7 @@ void setupWindow()
     metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
     metalLayer.framebufferOnly = YES;
     metalLayer.frame = frame;
-    metalLayer.displaySyncEnabled = NO; // Disable vsync
+    metalLayer.displaySyncEnabled = YES; // Disable vsync
     
     // Create custom view and set as content view
     ZaynView *zaynView = [[ZaynView alloc] initWithFrame:frame];

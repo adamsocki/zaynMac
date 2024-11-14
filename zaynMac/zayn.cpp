@@ -10,7 +10,8 @@
 //
 //#include "render_triangle.hpp"
 //#include "dynamic_array.hpp"
-
+#include <stdlib.h> // pulls in declaration of malloc, free
+#include <string.h> // pulls in declaration for strlen.
 
 #include <iostream>
 
@@ -30,10 +31,10 @@ void InitializeGame() {
     AllocateMemoryArena(&zaynMemory.permanentMemArena, Megabytes(256));
     AllocateMemoryArena(&zaynMemory.frameMemArena, Megabytes(32));
 
-    InputManager* inputManager = &Zayn->inputManager;
+    InputManager* inputManager = &zaynMemory.inputManager;
 
 
-//    AllocateInputManager(inputManager, &Zayn->permanentMemArena, 4);
+    AllocateInputManager(inputManager, &zaynMemory.permanentMemArena, 4);
         
 //    zaynMemory.keyboard = &inputManager->devices[0];
     //AllocateInputDevice(Zayn->keyboard, InputDeviceType_Keyboard, Input_KeyboardDiscreteCount, 0);
