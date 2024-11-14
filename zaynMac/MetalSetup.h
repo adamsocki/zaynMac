@@ -15,6 +15,12 @@
 #import <simd/simd.h>
 #import <Cocoa/Cocoa.h>
 
+@interface MetalSetup : NSObject
+
+// Declare any methods or properties here
+
+
+
 extern NSWindow *window;
 extern id<MTLDevice> device;
 extern id<MTLCommandQueue> commandQueue;
@@ -29,7 +35,9 @@ void setupMetal();
 void Render();
 void InitTriangle();
 void RenderTriangle();
-//
-//
-//
+
+
+
+
+@end
 #endif /* MetalSetup_h */

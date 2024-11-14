@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		5E1983C82CE4466A0003C82D /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983C72CE4466A0003C82D /* AppDelegate.mm */; };
 		5E1983CC2CE446F60003C82D /* MetalSetup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983CB2CE446F60003C82D /* MetalSetup.mm */; };
-		5E1983CE2CE447600003C82D /* ZaynView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983CD2CE447600003C82D /* ZaynView.m */; };
+		5E1983CE2CE447600003C82D /* ZaynView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E1983CD2CE447600003C82D /* ZaynView.mm */; };
 		5E46ADDE2CE3FB9C0014573A /* dynamic_array.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */; };
 		5E46ADE12CE3FBC50014573A /* my_memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E46ADDF2CE3FBC50014573A /* my_memory.cpp */; };
 		5E4B18EB2CE40336007528E3 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E4B18E92CE40336007528E3 /* input.cpp */; };
@@ -21,6 +21,7 @@
 		5E95F7762CE3B56B005705D3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E95F7752CE3B56B005705D3 /* Metal.framework */; };
 		5E95F77A2CE3B577005705D3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E95F7792CE3B577005705D3 /* QuartzCore.framework */; };
 		5E95F77C2CE3B580005705D3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E95F77B2CE3B580005705D3 /* Cocoa.framework */; };
+		5EE68F5C2CE694C200412470 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ED015712CE692430077BBFA /* Carbon.framework */; };
 		5EEC0E0C2CE3B63A00CE7410 /* zayn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EEC0E0A2CE3B63A00CE7410 /* zayn.cpp */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +43,7 @@
 		5E1983C92CE4469D0003C82D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5E1983CA2CE446CF0003C82D /* MetalSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetalSetup.h; sourceTree = "<group>"; };
 		5E1983CB2CE446F60003C82D /* MetalSetup.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalSetup.mm; sourceTree = "<group>"; };
-		5E1983CD2CE447600003C82D /* ZaynView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZaynView.m; sourceTree = "<group>"; };
+		5E1983CD2CE447600003C82D /* ZaynView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZaynView.mm; sourceTree = "<group>"; };
 		5E1983CF2CE447850003C82D /* ZaynView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ZaynView.hpp; sourceTree = "<group>"; };
 		5E46ADDC2CE3FB9C0014573A /* dynamic_array.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dynamic_array.cpp; sourceTree = "<group>"; };
 		5E46ADDD2CE3FB9C0014573A /* dynamic_array.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = dynamic_array.hpp; sourceTree = "<group>"; };
@@ -160,6 +161,7 @@
 		5E95F7772CE3B56F005705D3 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		5E95F7792CE3B577005705D3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5E95F77B2CE3B580005705D3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		5ED015712CE692430077BBFA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		5EEC0E0A2CE3B63A00CE7410 /* zayn.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zayn.cpp; sourceTree = "<group>"; };
 		5EEC0E0B2CE3B63A00CE7410 /* zayn.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zayn.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,6 +171,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EE68F5C2CE694C200412470 /* Carbon.framework in Frameworks */,
 				5E53CD832CE3C83C00B77592 /* Foundation.framework in Frameworks */,
 				5E95F77C2CE3B580005705D3 /* Cocoa.framework in Frameworks */,
 				5E95F77A2CE3B577005705D3 /* QuartzCore.framework in Frameworks */,
@@ -372,7 +375,7 @@
 				5E1983C92CE4469D0003C82D /* AppDelegate.h */,
 				5E1983CA2CE446CF0003C82D /* MetalSetup.h */,
 				5E1983CB2CE446F60003C82D /* MetalSetup.mm */,
-				5E1983CD2CE447600003C82D /* ZaynView.m */,
+				5E1983CD2CE447600003C82D /* ZaynView.mm */,
 				5E1983CF2CE447850003C82D /* ZaynView.hpp */,
 			);
 			path = zaynMac;
@@ -381,6 +384,7 @@
 		5E95F7742CE3B56B005705D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5ED015712CE692430077BBFA /* Carbon.framework */,
 				5E53CD822CE3C83C00B77592 /* Foundation.framework */,
 				5E95F77B2CE3B580005705D3 /* Cocoa.framework */,
 				5E95F7792CE3B577005705D3 /* QuartzCore.framework */,
@@ -417,7 +421,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					5E95F7692CE3B4EC005705D3 = {
 						CreatedOnToolsVersion = 15.3;
@@ -454,7 +458,7 @@
 				5E53CD862CE3C8EC00B77592 /* render_triangle.cpp in Sources */,
 				5E46ADDE2CE3FB9C0014573A /* dynamic_array.cpp in Sources */,
 				5E95F76E2CE3B4EC005705D3 /* main.mm in Sources */,
-				5E1983CE2CE447600003C82D /* ZaynView.m in Sources */,
+				5E1983CE2CE447600003C82D /* ZaynView.mm in Sources */,
 				5EEC0E0C2CE3B63A00CE7410 /* zayn.cpp in Sources */,
 				5E46ADE12CE3FBC50014573A /* my_memory.cpp in Sources */,
 				5E1983CC2CE446F60003C82D /* MetalSetup.mm in Sources */,
@@ -498,6 +502,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -559,6 +564,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -584,6 +590,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = EHNUR444DN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/metal-cpp";
@@ -597,6 +604,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = EHNUR444DN;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/metal-cpp";

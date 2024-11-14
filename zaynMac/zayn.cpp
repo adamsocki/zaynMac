@@ -57,7 +57,7 @@ void CleanUpZayn()
 {
     if (Zayn)
     {
-        free(Zayn);
+        //free(Zayn);
         Zayn = NULL;
     }
 }

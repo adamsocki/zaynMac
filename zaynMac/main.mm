@@ -9,11 +9,13 @@
 #import <Metal/Metal.h>
 #import <QuartzCore/CAMetalLayer.h>
 #import <Cocoa/Cocoa.h>
+//#import <Carbon/Carbon.h
 #import <Foundation/Foundation.h>
 
+#define DEBUG 1
 
 // main.m
-#import <Cocoa/Cocoa.h>
+//#import <Cocoa/Cocoa.h>
 #import "AppDelegate.h"
 
 NSApplication *app;

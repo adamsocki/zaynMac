@@ -14,6 +14,10 @@
 #include "dynamic_array.hpp"
 #include "my_memory.hpp"
 
+//#include <Cocoa/Cocoa.h>
+
+#include <Carbon/Carbon.h>
+
 enum InputDeviceType
 {
     InputDeviceType_Invalid,
@@ -113,6 +117,8 @@ enum InputKeyboardDiscrete : uint32
     Input_Home,
     Input_Insert,
     Input_PageUp,
+    Input_LeftCommand,
+    Input_RightCommand,
     Input_ForwardDelete,
     Input_End,
     Input_PageDown,
@@ -120,10 +126,13 @@ enum InputKeyboardDiscrete : uint32
     Input_RightArrow,
     Input_DownArrow,
     Input_UpArrow,
+    
+    Input_Invalid,
 
     Input_KeyboardDiscreteCount
 };
 
+InputKeyboardDiscrete GetInputKeyFromVirtualKey(unsigned short keyCode);
 
 struct InputDevice
 {
