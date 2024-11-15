@@ -22,10 +22,10 @@ void InitializeGame() {
     // Initialize game state, load resources, etc.
     std::cout << "Game initialized!" << std::endl;
     
-    ZaynMemory zaynMemory = {};
-//    zaynMemory.testInt = 20;
+    Zayn = new ZaynMemory();
+    Zayn->testInt = 20;
 //    int32 test2 = 22;
-    Zayn = &zaynMemory;
+//    Zayn = &zaynMemory;
     
     
     AllocateMemoryArena(&Zayn->permanentMemArena, Megabytes(256));
@@ -58,7 +58,7 @@ void CleanUpZayn()
 {
     if (Zayn)
     {
-        //free(Zayn);
+        free(Zayn);
         Zayn = NULL;
     }
 }

@@ -43,9 +43,9 @@ struct ZaynMemory
     
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 extern ZaynMemory* Zayn;
 void InitializeGame();
@@ -53,6 +53,6 @@ void UpdateLoop();
 void CleanUpZayn();
 
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif

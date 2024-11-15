@@ -13,6 +13,7 @@
 #include "data_types.h"
 #include "dynamic_array.hpp"
 #include "my_memory.hpp"
+struct ZaynMemory;
 
 //#include <Cocoa/Cocoa.h>
 
@@ -176,7 +177,8 @@ struct InputManager
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity);
 void AllocateInputDevice(InputDevice *device, InputDeviceType type, int32 discreteCount, int32 analogueCount);
-void InputRegister(InputKeyboardDiscrete inputKey);
+void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey);
+
 
 
 #endif /* input_hpp */

@@ -11,6 +11,7 @@
 #include <string.h> // pulls in declaration for strlen.
 #include <iostream>
 #include "zayn.hpp"
+#include "dynamic_array.hpp"
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity)
 {
@@ -112,10 +113,12 @@ InputKeyboardDiscrete GetInputKeyFromVirtualKey(unsigned short keyCode)
 }
 
 
-void InputRegister(InputKeyboardDiscrete inputKey)
+void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey)
 {
     InputEvent inputEvent = {};
     inputEvent.device = Zayn->keyboard;
     inputEvent.index = inputKey;
     inputEvent.discreteValue = true;
+   
+    PushBack(&zayn->inputManager.events, inputEvent);
 }

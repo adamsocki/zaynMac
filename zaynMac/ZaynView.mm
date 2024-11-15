@@ -11,6 +11,7 @@
 //// MyView.m
 #import "ZaynView.hpp"
 #import "input.hpp"
+#import "zayn.hpp"
 
 @implementation ZaynView
 
@@ -36,14 +37,8 @@
         
         if (inputKey != Input_Invalid) {
             
-            InputRegister(inputKey);
+            InputRegister(Zayn, inputKey);
             
-//            InputEvent inputEvent = {};
-//            inputEvent.device = Zayn->keyboard;
-//            inputEvent.index = inputKey;
-//            inputEvent.discreteValue = true;  // Key is pressed
-//            PushBack(&Zayn->inputManager->events, inputEvent);
-//            
             #if DEBUG
             NSLog(@"Key pressed: %d -> %d", keyCode, inputKey);
             #endif
