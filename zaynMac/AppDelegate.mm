@@ -18,7 +18,7 @@
 //    UpdateGame();
     //[self performSelectorOnMainThread:@selector(startRenderLoop) withObject:nil waitUntilDone:NO];
 //        [self gameLoop];
-    [self performSelectorInBackground:@selector(startRenderLoop) withObject:nil];
+    [self performSelectorInBackground:@selector(startGameLoop) withObject:nil];
     
 }
 
@@ -29,12 +29,19 @@
     return YES;
 }
 
-- (void)startRenderLoop {
+- (void)startGameLoop {
     isRunning = YES;
     
     while (isRunning)
     {
-        Render();
+        @autoreleasepool {
+            if (zaynView)
+            {
+                [zaynView testEvent];
+            }
+            Render();
+        }
+//        Render();
       //  [self performSelector:@selector(startRenderLoop) withObject:nil afterDelay:(1.0 / 60.0)]; // 60 FPS
             
     }

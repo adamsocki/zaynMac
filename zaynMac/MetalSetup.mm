@@ -16,6 +16,8 @@
 //#import "MyView.h"
 //
 NSWindow *window;
+
+ZaynView *zaynView;
 id<MTLDevice> device;
 id<MTLCommandQueue> commandQueue;
 id<MTLRenderPipelineState> pipelineState;
@@ -49,7 +51,7 @@ void setupWindow()
     metalLayer.displaySyncEnabled = YES; // Disable vsync
     
     // Create custom view and set as content view
-    ZaynView *zaynView = [[ZaynView alloc] initWithFrame:frame];
+    zaynView = [[ZaynView alloc] initWithFrame:frame];
     [zaynView setLayer:metalLayer];
     [zaynView setWantsLayer:YES];
     [window setContentView:zaynView];

@@ -19,6 +19,10 @@
     return YES;
 }
 
+- (void) testEvent{
+    NSLog(@"testEVent");
+}
+
 - (void) processKeyEvent:(NSEvent*)event isKeyDown:(BOOL)isKeyDown
 {
     unsigned short keyCode = [event keyCode];

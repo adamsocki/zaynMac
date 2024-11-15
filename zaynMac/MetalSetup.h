@@ -14,6 +14,7 @@
 #import <QuartzCore/CAMetalLayer.h>
 #import <simd/simd.h>
 #import <Cocoa/Cocoa.h>
+#import "ZaynView.hpp"
 
 @interface MetalSetup : NSObject
 
@@ -22,6 +23,7 @@
 
 
 extern NSWindow *window;
+extern ZaynView *zaynView;
 extern id<MTLDevice> device;
 extern id<MTLCommandQueue> commandQueue;
 extern id<MTLRenderPipelineState> pipelineState;
