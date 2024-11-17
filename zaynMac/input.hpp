@@ -186,6 +186,7 @@ void AllocateInputDevice(InputDevice *device, InputDeviceType type, int32 discre
 void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey, KeyAction action);
 void InputUpdate(InputManager* inputManager);
 void ClearInputManager(InputManager* input);
+bool InputHeld(InputDevice* device, int32 inputID);
 
 
 

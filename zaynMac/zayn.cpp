@@ -14,9 +14,13 @@
 #include <string.h> // pulls in declaration for strlen.
 
 #include <iostream>
+#include <chrono>
+#include <cstdio>
 
 
 ZaynMemory* Zayn = NULL;
+
+
 
 void InitializeGame() {
     // Initialize game state, load resources, etc.
@@ -26,7 +30,19 @@ void InitializeGame() {
     Zayn->testInt = 20;
 //    int32 test2 = 22;
 //    Zayn = &zaynMemory;
+    clock_gettime(CLOCK_MONOTONIC, &Zayn->time.spec);
+    Zayn->time.startTime = (Zayn->time.spec.tv_sec * 1000.0) + (Zayn->time.spec.tv_nsec / 1.0e6);
     
+       
+
+        Zayn->time.zaynTime = 0.0;
+        Zayn->time.systemTime = Zayn->time.startTime;
+//        double prevSystemTime = systemTime;
+//        double deltaTime;
+
+        // seconds
+//        double frameRate = 1.0 / 6000.0; // Hertz
+//        double timeSinceRender = 0.0;
     
     AllocateMemoryArena(&Zayn->permanentMemArena, Megabytes(256));
     AllocateMemoryArena(&Zayn->frameMemArena, Megabytes(32));
@@ -43,11 +59,24 @@ void InitializeGame() {
     //InitializeKeyMap();
     
 
-    
+   
+           
 //    InitTriangle();
 }
 
 void UpdateGame() {
+        // HANDLE TIME
+    clock_gettime(CLOCK_MONOTONIC, &Zayn->time.spec);
+    Zayn->time.systemTime = (Zayn->time.spec.tv_sec * 1000.0) + (Zayn->time.spec.tv_nsec / 1.0e6);
+    Zayn->time.deltaTime = (Zayn->time.systemTime - Zayn->time.prevSystemTime) / 1000.0;
+    Zayn->time.prevSystemTime = Zayn->time.systemTime;
+
+    Zayn->time.zaynTime = (Zayn->time.systemTime - Zayn->time.startTime) / 1000.0;
+    Zayn->time.timeSinceRender += Zayn->time.deltaTime;
+    
+    printf("zaynTime %.6f\n" , Zayn->time.zaynTime);
+    printf("deltaTime %.6f\n", Zayn->time.deltaTime);
+
     // Update game state, handle input, etc.
 //    while 
 //    std::cout << "Game updated!" << std::endl;
@@ -59,6 +88,14 @@ void UpdateGame() {
 //    }
     InputUpdate(&Zayn->inputManager);
 //    RenderTriangle();
+    
+//    if (InputHeld(Zayn->keyboard, Input_U))
+//    {
+//        std::cout << "Input_U" << std::endl;
+//    }
+//    clock_gettime(CLOCK_MONOTONIC, &spec);
+   // systemTime = (spec.tv_sec * 1000.0) + (spec.tv_nsec
+    
     
     ClearInputManager(&Zayn->inputManager);
 }

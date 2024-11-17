@@ -10,6 +10,8 @@
 #ifndef TimeSetup_hpp
 #define TimeSetup_hpp
 
+
+
 struct ZaynTime
 {
     real32 startTime;
@@ -24,6 +26,12 @@ struct ZaynTime
 
     int32 frameCount;
     real32 fpsTimer;
+    
+    real32 timeSinceRender;
+    
+    timespec spec;
+    
+//    real32 frameRate;
     
 };
 

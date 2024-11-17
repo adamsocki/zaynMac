@@ -216,3 +216,8 @@ void ClearInputManager(InputManager* input)
     input->charCount = 0;
     //memset(input->inputChars, 0, input->charSize);
 }
+
+bool InputHeld(InputDevice* device, int32 inputID)
+{
+    return device->framesHeld[inputID] > 0;
+}
