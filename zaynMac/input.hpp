@@ -26,6 +26,12 @@ enum InputDeviceType
     InputDeviceType_Mouse,
 };
 
+enum KeyAction
+{
+    KeyIsPressed,
+    KeyIsReleased
+};
+
 enum InputKeyboardDiscrete : uint32
 {
     Input_A,
@@ -177,7 +183,9 @@ struct InputManager
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity);
 void AllocateInputDevice(InputDevice *device, InputDeviceType type, int32 discreteCount, int32 analogueCount);
-void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey);
+void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey, KeyAction action);
+void InputUpdate(InputManager* inputManager);
+void ClearInputManager(InputManager* input);
 
 
 

@@ -113,12 +113,106 @@ InputKeyboardDiscrete GetInputKeyFromVirtualKey(unsigned short keyCode)
 }
 
 
-void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey)
+
+
+void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey, KeyAction action)
 {
-    InputEvent inputEvent = {};
-    inputEvent.device = Zayn->keyboard;
-    inputEvent.index = inputKey;
-    inputEvent.discreteValue = true;
-   
-    PushBack(&zayn->inputManager.events, inputEvent);
+ 
+    
+        if (action == KeyIsPressed)
+        {
+            InputEvent event = {};
+            event.device = Zayn->keyboard;
+            event.index = inputKey;
+            
+            event.discreteValue = true;
+
+            PushBack(&Zayn->inputManager.events, event);
+
+             std::cout << "Key pressed: " << inputKey << std::endl;
+        }
+        else if (action == KeyIsReleased)
+        {
+            InputEvent event = {};
+            event.device = Zayn->keyboard;
+            event.index = inputKey;
+            event.discreteValue = false;
+            std::cout << "Key released: " << inputKey << std::endl;
+
+            PushBack(&Zayn->inputManager.events, event);
+
+        }
+}
+
+
+void InputUpdate(InputManager* inputManager)
+{
+    for (int d = 0; d < inputManager->deviceCount; d++)
+        {
+            InputDevice* device = &inputManager->devices[d];
+
+            if (device->type == InputDeviceType_Invalid) { continue; }
+
+            for (int i = 0; i < device->discreteCount; i++)
+            {
+                device->released[i] = false;
+                 //std::cout << "device->discretecount: " << i << std::endl;
+
+                if (device->framesHeld[i] >= 0)
+                {
+                     //std::cout << "device->discretecount: " << i << std::endl;
+                     //std::cout << "device->framesHeld[i]++: " << device->framesHeld[i] << std::endl;
+                    device->framesHeld[i]++;
+                    device->pressed[i] = false;
+                }
+            }
+        }
+    
+    for (int i = 0; i < inputManager->events.count; i++)
+        {
+            // std::cout << "inputManager->events.count: " << i << std::endl;
+
+            InputEvent event = inputManager->events[i];
+            int32 index = event.index;
+
+            InputDevice* device = event.device;
+
+            if (!event.discreteValue)
+            {
+                if (device->framesHeld[index] > 0)
+                {
+                    device->released[index] = true;
+                }
+                device->timePressed[index] = -1;
+                device->framesHeld[index] = -1;
+                device->pressed[index] = false;
+            }
+            else
+            {
+                if (device->framesHeld[index] < 0)
+                {
+                     printf("pressed\n");
+                    std::cout << "device->framesHeld" << std::endl;
+
+                    device->timePressed[index] = Zayn->time.zaynTime;
+                    device->framesHeld[index] = 0;
+                    device->pressed[index] = true;
+                    device->released[index] = false;
+                }
+                else
+                {
+                    // @NOTE: we shouldnt even get a pressed event when the key is being held
+                }
+            }
+        }
+
+}
+
+
+void ClearInputManager(InputManager* input)
+{
+    DynamicArrayClear(&input->events);
+
+    input->charCount = 0;
+    //memset(input->inputChars, 0, input->charSize);
 }

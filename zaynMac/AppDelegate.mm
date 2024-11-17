@@ -1,4 +1,4 @@
-
+ 
 // AppDelegate.mm
 #import "AppDelegate.h"
 #import "MetalSetup.h"
@@ -19,6 +19,7 @@
     //[self performSelectorOnMainThread:@selector(startRenderLoop) withObject:nil waitUntilDone:NO];
 //        [self gameLoop];
     [self performSelectorInBackground:@selector(startGameLoop) withObject:nil];
+//    [self startGameLoop];
     
 }
 
@@ -37,8 +38,10 @@
         @autoreleasepool {
             if (zaynView)
             {
-                [zaynView testEvent];
+//                [zaynView pollEvents];
+                // Call Poll for Input in NSView for NSEvents
             }
+            UpdateGame();
             Render();
         }
 //        Render();

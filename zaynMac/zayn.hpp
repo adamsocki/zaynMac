@@ -49,7 +49,7 @@ struct ZaynMemory
 
 extern ZaynMemory* Zayn;
 void InitializeGame();
-void UpdateLoop();
+void UpdateGame();
 void CleanUpZayn();
 
 

@@ -12,7 +12,7 @@
 #import <Cocoa/Cocoa.h>
 //
 @interface ZaynView : NSView
-- (void) testEvent;
+//- (void) testEvent;
 @end
 //
 //

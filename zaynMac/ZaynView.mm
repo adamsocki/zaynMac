@@ -19,7 +19,7 @@
     return YES;
 }
 
-- (void) testEvent{
+- (void) pollEventss{
     NSLog(@"testEVent");
 }
 
@@ -41,7 +41,7 @@
         
         if (inputKey != Input_Invalid) {
             
-            InputRegister(Zayn, inputKey);
+            InputRegister(Zayn, inputKey, KeyIsPressed);
             
             #if DEBUG
             NSLog(@"Key pressed: %d -> %d", keyCode, inputKey);
@@ -50,7 +50,19 @@
 }
 
 - (void)keyUp:(NSEvent *)event {
-    [self processKeyEvent:event isKeyDown:NO];
+//    [self processKeyEvent:event isKeyDown:NO];
+    unsigned short keyCode = [event keyCode];
+        InputKeyboardDiscrete inputKey = GetInputKeyFromVirtualKey(keyCode);
+        
+        if (inputKey != Input_Invalid) {
+            
+            InputRegister(Zayn, inputKey, KeyIsReleased);
+            
+            #if DEBUG
+            NSLog(@"Key released: %d -> %d", keyCode, inputKey);
+            #endif
+        }
+
 }
 
 @end

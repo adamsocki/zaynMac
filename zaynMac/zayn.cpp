@@ -50,8 +50,17 @@ void InitializeGame() {
 void UpdateGame() {
     // Update game state, handle input, etc.
 //    while 
-    std::cout << "Game updated!" << std::endl;
+//    std::cout << "Game updated!" << std::endl;
+//    int32 a = 11;
+//    for (int i = 0; i < 1222; i++)
+//    {
+//        int32 test = 10;
+//        a += test;
+//    }
+    InputUpdate(&Zayn->inputManager);
 //    RenderTriangle();
+    
+    ClearInputManager(&Zayn->inputManager);
 }
 
 void CleanUpZayn()
