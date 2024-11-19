@@ -2,13 +2,11 @@
 //  data_types.h
 //  zaynMac
 //
-//  Created by socki on 11/12/24.
+//  Created by socki on 11/18/24.
 //
 
-#ifndef data_types_h
-#define data_types_h
-//#include <cstdint>
-
+//data_types.h
+#pragma once
 
 #include <stdint.h>
 #include <inttypes.h>
@@ -47,6 +45,3 @@ typedef real64 float64;
 
 typedef real32 f32;
 typedef real64 f64;
-
-
-#endif /* data_types_h */
