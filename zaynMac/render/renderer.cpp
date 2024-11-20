@@ -1,8 +1,7 @@
 
-//#pragma once
-
 #include "renderer.hpp"
 #include "../math/math.h"
+
 
 
 
@@ -62,12 +61,12 @@ namespace shader_types
         simd::float4 instanceColor;
     };
 
-    struct CameraData
-    {
-        simd::float4x4 perspectiveTransform;
-        simd::float4x4 worldTransform;
-        simd::float3x3 worldNormalTransform;
-    };
+//    struct CameraData
+//    {
+//        simd::float4x4 perspectiveTransform;
+//        simd::float4x4 worldTransform;
+//        simd::float3x3 worldNormalTransform;
+//    };
 }
 
 void Renderer::buildShaders()
@@ -343,7 +342,9 @@ void Renderer::buildBuffers()
         _pInstanceDataBuffer[ i ] = _pDevice->newBuffer( instanceDataSize, MTL::ResourceStorageModeManaged );
     }
 
-    const size_t cameraDataSize = kMaxFramesInFlight * sizeof( shader_types::CameraData );
+//    const size_t cameraDataSize = kMaxFramesInFlight * sizeof( shader_types::CameraData );
+    
+    const size_t cameraDataSize = kMaxFramesInFlight * sizeof( CameraData );
     for ( size_t i = 0; i < kMaxFramesInFlight; ++i )
     {
         _pCameraDataBuffer[ i ] = _pDevice->newBuffer( cameraDataSize, MTL::ResourceStorageModeManaged );
@@ -378,6 +379,7 @@ void Renderer::generateMandelbrotTexture( MTL::CommandBuffer* pCommandBuffer )
 
 void Renderer::draw( MTK::View* pView )
 {
+    // ZaynUpdate() is called here in zaynAppDelegate;
     using simd::float3;
     using simd::float4;
     using simd::float4x4;
@@ -394,11 +396,12 @@ void Renderer::draw( MTK::View* pView )
         dispatch_semaphore_signal( pRenderer->_semaphore );
     });
 
-    _angle += 0.002f;
+    _angle += 0.02f;
 
     const float scl = 0.2f;
     shader_types::InstanceData* pInstanceData = reinterpret_cast< shader_types::InstanceData *>( pInstanceDataBuffer->contents() );
-
+    const float scl2 = 0.9f;
+    
     float3 objectPosition = { 0.f, 0.f, -10.f };
 
     float4x4 rt = math::makeTranslate( objectPosition );
@@ -428,8 +431,8 @@ void Renderer::draw( MTK::View* pView )
         float4x4 yrot = math::makeYRotate( _angle * cosf((float)iy));
 
         float x = ((float)ix - (float)kInstanceRows/2.f) * (2.f * scl) + scl;
-        float y = ((float)iy - (float)kInstanceColumns/2.f) * (2.f * scl) + scl;
-        float z = ((float)iz - (float)kInstanceDepth/2.f) * (2.f * scl);
+        float y = ((float)iy - (float)kInstanceColumns/2.f) * (2.f * scl) + scl2;
+        float z = ((float)iz - (float)kInstanceDepth/2.f) * (2.f * scl2);
         float4x4 translate = math::makeTranslate( math::add( objectPosition, { x, y, z } ) );
 
         pInstanceData[ i ].instanceTransform = fullObjectRot * translate * yrot * zrot * scale;
@@ -448,17 +451,22 @@ void Renderer::draw( MTK::View* pView )
     // Update camera state:
 
     MTL::Buffer* pCameraDataBuffer = _pCameraDataBuffer[ _frame ];
-    shader_types::CameraData* pCameraData = reinterpret_cast< shader_types::CameraData *>( pCameraDataBuffer->contents() );
-    pCameraData->perspectiveTransform = math::makePerspective( 45.f * M_PI / 180.f, 1.f, 0.03f, 500.0f ) ;
-    pCameraData->worldTransform = math::makeIdentity();
+//    shader_types::CameraData* pCameraData = reinterpret_cast< shader_types::CameraData *>( pCameraDataBuffer->contents() );
+    CameraData* pCameraData = reinterpret_cast< CameraData *>( pCameraDataBuffer->contents() );
+//    zaynMem->cameraData = reinterpret_cast< CameraData *>( pCameraDataBuffer->contents() );
+    zaynMem->cameraData = pCameraData;
+    zaynMem->cameraData->perspectiveTransform = math::makePerspective( 45.f * M_PI / 180.f, 1.f, 0.03f, 500.0f ) ;
+    zaynMem->cameraData->worldTransform = math::makeIdentity();
     
-    const float zTranslation = -50.0f;
+    CameraUpdateTest(&zaynMem->camera);
+    
+    const float zTranslation = -50.0f * sinf(zaynMem->camera.dif);
     simd::float3 translationVector = {0.0f, 0.0f, zTranslation};
-    pCameraData->worldTransform = math::makeIdentity();
-    pCameraData->worldTransform.columns[3].z = zTranslation;  // Direct modification of the translation component
+    zaynMem->cameraData->worldTransform = math::makeIdentity();
+    zaynMem->cameraData->worldTransform.columns[3].z = zTranslation;  // Direct modification of the translation component
     
-    pCameraData->worldNormalTransform = math::discardTranslation( pCameraData->worldTransform );
-    pCameraDataBuffer->didModifyRange( NS::Range::Make( 0, sizeof( shader_types::CameraData ) ) );
+    zaynMem->cameraData->worldNormalTransform = math::discardTranslation( zaynMem->cameraData->worldTransform );
+    pCameraDataBuffer->didModifyRange( NS::Range::Make( 0, sizeof( CameraData ) ) );
 
     // Update texture:
 

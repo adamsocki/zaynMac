@@ -6,3 +6,9 @@
 //
 
 #include "camera.hpp"
+
+
+void CameraUpdateTest(Camera* cam)
+{
+    cam->dif += 0.01f;
+}

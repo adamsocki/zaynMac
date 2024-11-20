@@ -1,13 +1,20 @@
 #include "zaynAppDelegate.hpp"
 //
 //#include "MTKViewDelegate.hpp"  // Include for MyMTKViewDelegate
-//#include "zayn.hpp"
+#include "zayn.hpp"
 
 MyMTKViewDelegate::MyMTKViewDelegate( MTL::Device* pDevice )
 : MTK::ViewDelegate()
 , _pRenderer( new Renderer( pDevice ) )
 {
+//    _pRenderer->zaynMem = zaynMem;
 }
+
+void MyMTKViewDelegate::InitViewDel()
+{
+    _pRenderer->zaynMem = zaynMem;
+}
+
 
 MyMTKViewDelegate::~MyMTKViewDelegate()
 {
@@ -99,6 +106,8 @@ void ZaynAppDelegate::applicationDidFinishLaunching(NS::Notification* pNotificat
     _pMtkView->setClearDepth(1.0f);
 
     _pViewDelegate = new MyMTKViewDelegate(_pDevice);
+    _pViewDelegate->zaynMem = zaynMem;
+    _pViewDelegate->InitViewDel();
     _pMtkView->setDelegate(_pViewDelegate);
 
     _pWindow->setContentView(_pMtkView);

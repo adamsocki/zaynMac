@@ -1,21 +1,30 @@
-////
-////  camera.hpp
-////  zaynMac
-////
-////  Created by socki on 11/18/24.
-////
 //
-//#ifndef camera_hpp
-//#define camera_hpp
+//  camera.hpp
+//  zaynMac
 //
+//  Created by socki on 11/18/24.
+//
+
+#ifndef camera_hpp
+#define camera_hpp
+
+#include <Metal/Metal.hpp>
 //#include <stdio.h>
 //#include "math/math.h"
-//
-//struct CameraData
-//{
-//    mat4 perspective;
-//    mat4 view;
-//    mat3 normalMatrix;
-//};
-//
-//#endif /* camera_hpp */
+#include <simd/simd.h>
+
+struct CameraData
+{
+    simd::float4x4 perspectiveTransform;
+    simd::float4x4 worldTransform;
+    simd::float3x3 worldNormalTransform;
+};
+
+struct Camera
+{
+    float dif;
+};
+
+void CameraUpdateTest(Camera* cam);
+
+#endif /* camera_hpp */

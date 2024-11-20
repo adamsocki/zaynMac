@@ -3,6 +3,8 @@
 #include <Metal/Metal.hpp>
 #include <AppKit/AppKit.hpp>
 #include <MetalKit/MetalKit.hpp>
+#include "../zayn.hpp"
+#include "../camera.hpp"
 
 #include <simd/simd.h>
 
@@ -21,6 +23,7 @@ class Renderer
 {
     public:
         Renderer( MTL::Device* pDevice );
+    ZaynMemory* zaynMem;
         ~Renderer();
         void buildShaders();
         void buildComputePipeline();

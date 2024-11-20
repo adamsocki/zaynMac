@@ -29,14 +29,20 @@
 
 #include <simd/simd.h>
 
+ZaynMemory* Zayn = {};
+
 int main( int argc, char* argv[] )
 {
     NS::AutoreleasePool* pAutoreleasePool = NS::AutoreleasePool::alloc()->init();
 
     ZaynAppDelegate zaynDel;
-
+    
+    Zayn = new ZaynMemory();
     NS::Application* pSharedApplication = NS::Application::sharedApplication();
     pSharedApplication->setDelegate( &zaynDel );
+    
+    zaynDel.zaynMem = Zayn;
+//    zaynDel.
     pSharedApplication->run();
 
     pAutoreleasePool->release();

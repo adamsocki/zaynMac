@@ -7,17 +7,14 @@
 #include "../render/renderer.hpp"
 #include "zayn.hpp"
 
-// Forward declarations
-class MyMTKViewDelegate;
-
-
-
-
 
 class MyMTKViewDelegate : public MTK::ViewDelegate
 {
     public:
+        ZaynMemory* zaynMem;
+    
         MyMTKViewDelegate( MTL::Device* pDevice );
+        void InitViewDel();
         virtual ~MyMTKViewDelegate() override;
         virtual void drawInMTKView( MTK::View* pView ) override;
 
@@ -30,6 +27,7 @@ class ZaynAppDelegate : public NS::ApplicationDelegate
 {
 public:
     ~ZaynAppDelegate();
+    ZaynMemory* zaynMem;
 
     NS::Menu* createMenuBar();
 
