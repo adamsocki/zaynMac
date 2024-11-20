@@ -118,7 +118,7 @@ void ZaynAppDelegate::applicationDidFinishLaunching(NS::Notification* pNotificat
     NS::Application* pApp = reinterpret_cast<NS::Application*>(pNotification->object());
     pApp->activateIgnoringOtherApps(true);
     
-    ZaynInit();
+    ZaynInit(zaynMem);
 }
 
 bool ZaynAppDelegate::applicationShouldTerminateAfterLastWindowClosed(NS::Application* pSender)

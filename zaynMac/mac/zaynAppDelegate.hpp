@@ -7,6 +7,12 @@
 #include "../render/renderer.hpp"
 #include "zayn.hpp"
 
+class MyMTKView : public MTK::View
+{
+    public:
+    
+    private:
+};
 
 class MyMTKViewDelegate : public MTK::ViewDelegate
 {
@@ -28,7 +34,8 @@ class ZaynAppDelegate : public NS::ApplicationDelegate
 public:
     ~ZaynAppDelegate();
     ZaynMemory* zaynMem;
-
+    MyMTKView* myMtkView;
+    
     NS::Menu* createMenuBar();
 
     virtual void applicationWillFinishLaunching(NS::Notification* pNotification) override;
@@ -38,6 +45,7 @@ public:
 private:
     NS::Window* _pWindow;
     MTK::View* _pMtkView;
+    
     MTL::Device* _pDevice;
     MyMTKViewDelegate* _pViewDelegate = nullptr;
 };

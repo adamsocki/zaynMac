@@ -7,6 +7,9 @@
 
 #pragma once
 #import "camera.hpp"
+#import "memory.hpp"
+#import "input.hpp"
+#import "time.hpp"
 
 
 struct ZaynMemory
@@ -14,6 +17,14 @@ struct ZaynMemory
     CameraData* cameraData;
     
     Camera camera;
+    
+    MemoryArena permanentMemArena;
+    MemoryArena frameMemArena;
+    
+    InputManager inputManager;
+    InputDevice* keyboard;
+
+    ZaynTime time;
 };
 
-void ZaynInit();
+void ZaynInit(ZaynMemory* zaynMem);

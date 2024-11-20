@@ -10,7 +10,16 @@
 
 
 
-void ZaynInit()
+void ZaynInit(ZaynMemory* zaynMem)
 {
     std::cout << "init Zayn" << std::endl;
+    AllocateMemoryArena(&zaynMem->permanentMemArena, Megabytes(256));
+    AllocateMemoryArena(&zaynMem->frameMemArena, Megabytes(32));
+    
+//    InputManager* inputManager = &zaynMem->inputManager;
+    AllocateInputManager(&zaynMem->inputManager, &zaynMem->permanentMemArena, 4);
+
+
 }
+
+

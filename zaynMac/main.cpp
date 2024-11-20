@@ -44,7 +44,7 @@ int main( int argc, char* argv[] )
     zaynDel.zaynMem = Zayn;
 //    zaynDel.
     pSharedApplication->run();
-
+    
     pAutoreleasePool->release();
 
     return 0;

@@ -460,7 +460,7 @@ void Renderer::draw( MTK::View* pView )
     
     CameraUpdateTest(&zaynMem->camera);
     
-    const float zTranslation = -50.0f * sinf(zaynMem->camera.dif);
+    const float zTranslation = -50.0f * sinf(zaynMem->camera.dif * 0.1f);
     simd::float3 translationVector = {0.0f, 0.0f, zTranslation};
     zaynMem->cameraData->worldTransform = math::makeIdentity();
     zaynMem->cameraData->worldTransform.columns[3].z = zTranslation;  // Direct modification of the translation component
