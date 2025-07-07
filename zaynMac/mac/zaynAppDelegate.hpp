@@ -17,7 +17,7 @@ class MyMTKViewDelegate : public MTK::ViewDelegate
         virtual ~MyMTKViewDelegate() override;
         virtual void drawInMTKView( MTK::View* pView ) override;
 
-    private:
+    private: 
         Renderer* _pRenderer;
 };
 
