@@ -385,6 +385,11 @@ void Renderer::draw( MTK::View* pView )
     using simd::float4x4;
 
     NS::AutoreleasePool* pPool = NS::AutoreleasePool::alloc()->init();
+    
+    // Update input system using polling
+    if (zaynMem) {
+        InputUpdatePolling(zaynMem);
+    }
 
     _frame = (_frame + 1) % Renderer::kMaxFramesInFlight;
     MTL::Buffer* pInstanceDataBuffer = _pInstanceDataBuffer[ _frame ];
@@ -398,53 +403,101 @@ void Renderer::draw( MTK::View* pView )
 
     _angle += 0.02f;
 
-    const float scl = 0.2f;
     shader_types::InstanceData* pInstanceData = reinterpret_cast< shader_types::InstanceData *>( pInstanceDataBuffer->contents() );
-    const float scl2 = 0.9f;
     
-    float3 objectPosition = { 0.f, 0.f, -10.f };
-
-    float4x4 rt = math::makeTranslate( objectPosition );
-    float4x4 rr1 = math::makeYRotate( -_angle );
-    float4x4 rr0 = math::makeXRotate( _angle * 0.5 );
-    float4x4 rtInv = math::makeTranslate( { -objectPosition.x, -objectPosition.y, -objectPosition.z } );
-    float4x4 fullObjectRot = rt * rr1 * rr0 * rtInv;
-
-    size_t ix = 0;
-    size_t iy = 0;
-    size_t iz = 0;
-    for ( size_t i = 0; i < kNumInstances; ++i )
+    // Update scene
+    if (zaynMem && zaynMem->currentScene)
     {
-        if ( ix == kInstanceRows )
+        zaynMem->currentScene->Update(0.016f); // Assuming 60fps
+        
+        // Get instance data from scene
+        InstanceData sceneInstances[kNumInstances];
+        int instanceCount = 0;
+        zaynMem->currentScene->GetInstanceData(sceneInstances, kNumInstances, instanceCount);
+        
+        // Convert scene instance data to shader instance data
+        for (int i = 0; i < instanceCount; i++)
         {
-            ix = 0;
-            iy += 1;
+            // Convert mat4 to simd float4x4 (note: your mat4 is column-major)
+            pInstanceData[i].instanceTransform = simd::float4x4{
+                simd::float4{sceneInstances[i].transform.m00, sceneInstances[i].transform.m10, sceneInstances[i].transform.m20, sceneInstances[i].transform.m30},
+                simd::float4{sceneInstances[i].transform.m01, sceneInstances[i].transform.m11, sceneInstances[i].transform.m21, sceneInstances[i].transform.m31},
+                simd::float4{sceneInstances[i].transform.m02, sceneInstances[i].transform.m12, sceneInstances[i].transform.m22, sceneInstances[i].transform.m32},
+                simd::float4{sceneInstances[i].transform.m03, sceneInstances[i].transform.m13, sceneInstances[i].transform.m23, sceneInstances[i].transform.m33}
+            };
+            
+            // Convert mat3 to simd float3x3 for normal transform
+            pInstanceData[i].instanceNormalTransform = simd::float3x3{
+                simd::float3{sceneInstances[i].normalTransform.m00, sceneInstances[i].normalTransform.m10, sceneInstances[i].normalTransform.m20},
+                simd::float3{sceneInstances[i].normalTransform.m01, sceneInstances[i].normalTransform.m11, sceneInstances[i].normalTransform.m21},
+                simd::float3{sceneInstances[i].normalTransform.m02, sceneInstances[i].normalTransform.m12, sceneInstances[i].normalTransform.m22}
+            };
+            
+            pInstanceData[i].instanceColor = simd::float4{sceneInstances[i].color.x, sceneInstances[i].color.y, sceneInstances[i].color.z, sceneInstances[i].color.w};
         }
-        if ( iy == kInstanceRows )
+        
+        // Fill remaining instances with default data if needed
+        for (int i = instanceCount; i < kNumInstances; i++)
         {
-            iy = 0;
-            iz += 1;
+            pInstanceData[i].instanceTransform = math::makeIdentity();
+            pInstanceData[i].instanceNormalTransform = simd::float3x3{
+                simd::float3{1.0f, 0.0f, 0.0f},
+                simd::float3{0.0f, 1.0f, 0.0f},
+                simd::float3{0.0f, 0.0f, 1.0f}
+            };
+            pInstanceData[i].instanceColor = simd::float4{0.0f, 0.0f, 0.0f, 0.0f};
         }
+    }
+    else
+    {
+        // Fallback to original behavior if no scene
+        const float scl = 0.2f;
+        const float scl2 = 0.9f;
+        
+        float3 objectPosition = { 0.f, 0.f, -10.f };
 
-        float4x4 scale = math::makeScale( (float3){ scl, scl, scl } );
-        float4x4 zrot = math::makeZRotate( _angle * sinf((float)ix) );
-        float4x4 yrot = math::makeYRotate( _angle * cosf((float)iy));
+        float4x4 rt = math::makeTranslate( objectPosition );
+        float4x4 rr1 = math::makeYRotate( -_angle );
+        float4x4 rr0 = math::makeXRotate( _angle * 0.5 );
+        float4x4 rtInv = math::makeTranslate( { -objectPosition.x, -objectPosition.y, -objectPosition.z } );
+        float4x4 fullObjectRot = rt * rr1 * rr0 * rtInv;
 
-        float x = ((float)ix - (float)kInstanceRows/2.f) * (2.f * scl) + scl;
-        float y = ((float)iy - (float)kInstanceColumns/2.f) * (2.f * scl) + scl2;
-        float z = ((float)iz - (float)kInstanceDepth/2.f) * (2.f * scl2);
-        float4x4 translate = math::makeTranslate( math::add( objectPosition, { x, y, z } ) );
+        size_t ix = 0;
+        size_t iy = 0;
+        size_t iz = 0;
+        for ( size_t i = 0; i < kNumInstances; ++i )
+        {
+            if ( ix == kInstanceRows )
+            {
+                ix = 0;
+                iy += 1;
+            }
+            if ( iy == kInstanceRows )
+            {
+                iy = 0;
+                iz += 1;
+            }
 
-        pInstanceData[ i ].instanceTransform = fullObjectRot * translate * yrot * zrot * scale;
-        pInstanceData[ i ].instanceNormalTransform = math::discardTranslation( pInstanceData[ i ].instanceTransform );
+            float4x4 scale = math::makeScale( (float3){ scl, scl, scl } );
+            float4x4 zrot = math::makeZRotate( _angle * sinf((float)ix) );
+            float4x4 yrot = math::makeYRotate( _angle * cosf((float)iy));
 
-        float iDivNumInstances = i / (float)kNumInstances;
-        float r = iDivNumInstances;
-        float g = 1.0f - r;
-        float b = sinf( M_PI * 2.0f * iDivNumInstances );
-        pInstanceData[ i ].instanceColor = (float4){ r, g, b, 1.0f };
+            float x = ((float)ix - (float)kInstanceRows/2.f) * (2.f * scl) + scl;
+            float y = ((float)iy - (float)kInstanceColumns/2.f) * (2.f * scl) + scl2;
+            float z = ((float)iz - (float)kInstanceDepth/2.f) * (2.f * scl2);
+            float4x4 translate = math::makeTranslate( math::add( objectPosition, { x, y, z } ) );
 
-        ix += 1;
+            pInstanceData[ i ].instanceTransform = fullObjectRot * translate * yrot * zrot * scale;
+            pInstanceData[ i ].instanceNormalTransform = math::discardTranslation( pInstanceData[ i ].instanceTransform );
+
+            float iDivNumInstances = i / (float)kNumInstances;
+            float r = iDivNumInstances;
+            float g = 1.0f - r;
+            float b = sinf( M_PI * 2.0f * iDivNumInstances );
+            pInstanceData[ i ].instanceColor = (float4){ r, g, b, 1.0f };
+
+            ix += 1;
+        }
     }
     pInstanceDataBuffer->didModifyRange( NS::Range::Make( 0, pInstanceDataBuffer->length() ) );
 
@@ -458,12 +511,31 @@ void Renderer::draw( MTK::View* pView )
     zaynMem->cameraData->perspectiveTransform = math::makePerspective( 45.f * M_PI / 180.f, 1.f, 0.03f, 500.0f ) ;
     zaynMem->cameraData->worldTransform = math::makeIdentity();
     
+    // Update camera movement based on input
+    CameraUpdateMovement(&zaynMem->camera, zaynMem, 0.016f); // Assuming 60fps
     CameraUpdateTest(&zaynMem->camera);
     
-    const float zTranslation = -50.0f * sinf(zaynMem->camera.dif * 0.1f);
-    simd::float3 translationVector = {0.0f, 0.0f, zTranslation};
-    zaynMem->cameraData->worldTransform = math::makeIdentity();
-    zaynMem->cameraData->worldTransform.columns[3].z = zTranslation;  // Direct modification of the translation component
+    // Update city builder game logic
+    UpdateCityBuilder(zaynMem, 0.016f);
+    
+    // Update scene from grid state
+    UpdateSceneFromGrid(zaynMem);
+    
+    // Create view matrix from camera position and orientation
+    simd::float3 cameraPos = zaynMem->camera.position;
+    simd::float3 cameraTarget = cameraPos + zaynMem->camera.forward;
+    
+    // Create look-at matrix
+    simd::float3 zAxis = simd::normalize(cameraPos - cameraTarget); // Forward (towards camera)
+    simd::float3 xAxis = simd::normalize(simd::cross(zaynMem->camera.up, zAxis)); // Right
+    simd::float3 yAxis = simd::cross(zAxis, xAxis); // Up
+    
+    zaynMem->cameraData->worldTransform = simd::float4x4{
+        simd::float4{xAxis.x, yAxis.x, zAxis.x, 0.0f},
+        simd::float4{xAxis.y, yAxis.y, zAxis.y, 0.0f},
+        simd::float4{xAxis.z, yAxis.z, zAxis.z, 0.0f},
+        simd::float4{-simd::dot(xAxis, cameraPos), -simd::dot(yAxis, cameraPos), -simd::dot(zAxis, cameraPos), 1.0f}
+    };
     
     zaynMem->cameraData->worldNormalTransform = math::discardTranslation( zaynMem->cameraData->worldTransform );
     pCameraDataBuffer->didModifyRange( NS::Range::Make( 0, sizeof( CameraData ) ) );

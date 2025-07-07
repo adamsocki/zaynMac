@@ -23,6 +23,14 @@ enum InputDeviceType
     InputDeviceType_Mouse,
 };
 
+enum MouseButton
+{
+    MouseButton_Left = 0,
+    MouseButton_Right = 1,
+    MouseButton_Middle = 2,
+    MouseButton_Count
+};
+
 enum KeyAction
 {
     KeyIsPressed,
@@ -138,6 +146,18 @@ enum InputKeyboardDiscrete : uint32
 
 InputKeyboardDiscrete GetInputKeyFromVirtualKey(unsigned short keyCode);
 
+struct MouseState
+{
+    real32 x, y;           // Current mouse position
+    real32 prevX, prevY;   // Previous mouse position
+    real32 deltaX, deltaY; // Mouse movement delta
+    
+    bool buttons[MouseButton_Count];     // Current button states
+    bool prevButtons[MouseButton_Count]; // Previous button states
+    bool clicked[MouseButton_Count];     // Button just clicked this frame
+    bool released[MouseButton_Count];    // Button just released this frame
+};
+
 struct InputDevice
 {
     InputDeviceType type;
@@ -153,6 +173,9 @@ struct InputDevice
 
     real32* prevAnalogue;
     real32* analogue;
+    
+    // Mouse-specific data
+    MouseState mouseState;
 };
 
 
@@ -173,9 +196,10 @@ struct InputManager
     DynamicArray<InputEvent> events;
 
     uint32 charCount;
-
-
-
+    
+    // Quick access pointers
+    InputDevice* keyboard;
+    InputDevice* mouse;
 };
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity);
@@ -184,6 +208,17 @@ void InputRegister(ZaynMemory* zayn, InputKeyboardDiscrete inputKey, KeyAction a
 void InputUpdate(ZaynMemory* zaynMem, InputManager* inputManager);
 void ClearInputManager(InputManager* input);
 bool InputHeld(InputDevice* device, int32 inputID);
+
+// Polling-based input for macOS
+void InputUpdatePolling(ZaynMemory* zaynMem);
+bool IsKeyPressed(InputKeyboardDiscrete key);
+
+// Mouse functions
+void UpdateMousePosition(InputDevice* mouse, real32 x, real32 y);
+void UpdateMouseButton(InputDevice* mouse, MouseButton button, bool pressed);
+bool IsMouseButtonPressed(InputDevice* mouse, MouseButton button);
+bool IsMouseButtonClicked(InputDevice* mouse, MouseButton button);
+bool IsMouseButtonReleased(InputDevice* mouse, MouseButton button);
 
 
 

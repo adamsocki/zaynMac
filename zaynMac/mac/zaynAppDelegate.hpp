@@ -7,13 +7,6 @@
 #include "../render/renderer.hpp"
 #include "zayn.hpp"
 
-class MyMTKView : public MTK::View
-{
-    public:
-    
-    private:
-};
-
 class MyMTKViewDelegate : public MTK::ViewDelegate
 {
     public:
@@ -34,7 +27,6 @@ class ZaynAppDelegate : public NS::ApplicationDelegate
 public:
     ~ZaynAppDelegate();
     ZaynMemory* zaynMem;
-    MyMTKView* myMtkView;
     
     NS::Menu* createMenuBar();
 

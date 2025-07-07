@@ -3,6 +3,7 @@
 //#include "MTKViewDelegate.hpp"  // Include for MyMTKViewDelegate
 #include "zayn.hpp"
 
+
 MyMTKViewDelegate::MyMTKViewDelegate( MTL::Device* pDevice )
 : MTK::ViewDelegate()
 , _pRenderer( new Renderer( pDevice ) )
@@ -111,7 +112,7 @@ void ZaynAppDelegate::applicationDidFinishLaunching(NS::Notification* pNotificat
     _pMtkView->setDelegate(_pViewDelegate);
 
     _pWindow->setContentView(_pMtkView);
-    _pWindow->setTitle(NS::String::string("09 - Compute to Render", NS::StringEncoding::UTF8StringEncoding));
+    _pWindow->setTitle(NS::String::string("Zayn Game Engine - WASD Controls", NS::StringEncoding::UTF8StringEncoding));
 
     _pWindow->makeKeyAndOrderFront(nullptr);
 

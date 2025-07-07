@@ -12,6 +12,7 @@
 #include "zayn.hpp"
 
 #include <Carbon/Carbon.h>
+#include <CoreGraphics/CoreGraphics.h>
 
 void AllocateInputManager(InputManager* inputManager, MemoryArena* arena, int32 deviceCapacity)
 {
@@ -220,4 +221,129 @@ void ClearInputManager(InputManager* input)
 bool InputHeld(InputDevice* device, int32 inputID)
 {
     return device->framesHeld[inputID] > 0;
+}
+
+// Polling-based input implementation using Core Graphics
+bool IsKeyPressed(InputKeyboardDiscrete key)
+{
+    // Map our input enum to Carbon virtual key codes
+    CGKeyCode carbonKey = 0;
+    switch (key)
+    {
+        case Input_W: carbonKey = kVK_ANSI_W; break;
+        case Input_A: carbonKey = kVK_ANSI_A; break;
+        case Input_S: carbonKey = kVK_ANSI_S; break;
+        case Input_D: carbonKey = kVK_ANSI_D; break;
+        case Input_Q: carbonKey = kVK_ANSI_Q; break;
+        case Input_E: carbonKey = kVK_ANSI_E; break;
+        default: return false;
+    }
+    
+    // Check if the key is pressed using Core Graphics
+    return CGEventSourceKeyState(kCGEventSourceStateHIDSystemState, carbonKey);
+}
+
+void InputUpdatePolling(ZaynMemory* zaynMem)
+{
+    if (!zaynMem) return;
+    
+    // Update keyboard
+    if (zaynMem->keyboard)
+    {
+        InputDevice* keyboard = zaynMem->keyboard;
+        
+        // Update keyboard state for WASD keys
+        InputKeyboardDiscrete keys[] = {Input_W, Input_A, Input_S, Input_D, Input_Q, Input_E};
+        
+        for (int i = 0; i < 6; i++)
+        {
+            InputKeyboardDiscrete key = keys[i];
+            bool isPressed = IsKeyPressed(key);
+            
+            if (isPressed)
+            {
+                if (keyboard->framesHeld[key] < 0)
+                {
+                    // Key just pressed
+                    keyboard->framesHeld[key] = 0;
+                    keyboard->pressed[key] = true;
+                    keyboard->released[key] = false;
+                }
+                else
+                {
+                    // Key held
+                    keyboard->framesHeld[key]++;
+                    keyboard->pressed[key] = false;
+                }
+            }
+            else
+            {
+                if (keyboard->framesHeld[key] >= 0)
+                {
+                    // Key just released
+                    keyboard->released[key] = true;
+                    keyboard->framesHeld[key] = -1;
+                    keyboard->pressed[key] = false;
+                }
+            }
+        }
+    }
+    
+    // Update mouse (polling mouse position)
+    if (zaynMem->inputManager.mouse)
+    {
+        InputDevice* mouse = zaynMem->inputManager.mouse;
+        
+        // Get current mouse position from system
+        CGPoint mouseLocation = CGEventGetLocation(CGEventCreate(NULL));
+        UpdateMousePosition(mouse, (real32)mouseLocation.x, (real32)mouseLocation.y);
+        
+        // Poll mouse buttons
+        bool leftPressed = CGEventSourceButtonState(kCGEventSourceStateHIDSystemState, kCGMouseButtonLeft);
+        bool rightPressed = CGEventSourceButtonState(kCGEventSourceStateHIDSystemState, kCGMouseButtonRight);
+        bool middlePressed = CGEventSourceButtonState(kCGEventSourceStateHIDSystemState, kCGMouseButtonCenter);
+        
+        UpdateMouseButton(mouse, MouseButton_Left, leftPressed);
+        UpdateMouseButton(mouse, MouseButton_Right, rightPressed);
+        UpdateMouseButton(mouse, MouseButton_Middle, middlePressed);
+    }
+}
+
+void UpdateMousePosition(InputDevice* mouse, real32 x, real32 y)
+{
+    MouseState* state = &mouse->mouseState;
+    
+    state->prevX = state->x;
+    state->prevY = state->y;
+    state->x = x;
+    state->y = y;
+    state->deltaX = x - state->prevX;
+    state->deltaY = y - state->prevY;
+}
+
+void UpdateMouseButton(InputDevice* mouse, MouseButton button, bool pressed)
+{
+    MouseState* state = &mouse->mouseState;
+    
+    state->prevButtons[button] = state->buttons[button];
+    state->buttons[button] = pressed;
+    
+    // Check for clicks and releases
+    state->clicked[button] = pressed && !state->prevButtons[button];
+    state->released[button] = !pressed && state->prevButtons[button];
+}
+
+bool IsMouseButtonPressed(InputDevice* mouse, MouseButton button)
+{
+    return mouse->mouseState.buttons[button];
+}
+
+bool IsMouseButtonClicked(InputDevice* mouse, MouseButton button)
+{
+    return mouse->mouseState.clicked[button];
+}
+
+bool IsMouseButtonReleased(InputDevice* mouse, MouseButton button)
+{
+    return mouse->mouseState.released[button];
 }

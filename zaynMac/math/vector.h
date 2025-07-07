@@ -9,8 +9,6 @@
 #define vector_h
 
 #include <stdio.h>
-
-#include "vector.h"
 #include "../data_types.h"
 #include "scalar.h"
 

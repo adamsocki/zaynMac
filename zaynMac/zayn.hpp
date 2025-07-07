@@ -10,6 +10,8 @@
 #import "memory.hpp"
 #import "input.hpp"
 #import "time.hpp"
+#import "scene.hpp"
+#import "grid.hpp"
 
 
 struct ZaynMemory
@@ -25,6 +27,13 @@ struct ZaynMemory
     InputDevice* keyboard;
 
     ZaynTime time;
+    
+    Scene* currentScene;
+    GridSystem* cityGrid;
 };
 
 void ZaynInit(ZaynMemory* zaynMem);
+
+// City builder functions
+void UpdateCityBuilder(ZaynMemory* zaynMem, float deltaTime);
+void UpdateSceneFromGrid(ZaynMemory* zaynMem);
