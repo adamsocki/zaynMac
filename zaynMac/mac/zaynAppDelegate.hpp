@@ -5,6 +5,7 @@
 #include <MetalKit/MetalKit.hpp>
 
 #include "../render/renderer.hpp"
+#include "../game_logic.hpp"
 #include "zayn.hpp"
 
 class MyMTKViewDelegate : public MTK::ViewDelegate
@@ -19,6 +20,7 @@ class MyMTKViewDelegate : public MTK::ViewDelegate
 
     private:
         Renderer* _pRenderer;
+        GameLogic* _pGameLogic;
 };
 
 

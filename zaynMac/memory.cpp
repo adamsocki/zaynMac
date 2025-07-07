@@ -15,7 +15,7 @@ void AllocateMemoryArena(MemoryArena* arena, uint64 capacity)
     void* (*allocate)(MemoryArena*, uint64) = &PushSizeMemoryArena;
     arena->allocate = (AllocateFunc*)allocate;
     arena->deallocate = NULL;
-    arena->capacity = capacity;
+    arena->capacity = (uint32)capacity;
     arena->size = 0;
     arena->ptr = malloc(capacity);
     memset(arena->ptr, 0, capacity);

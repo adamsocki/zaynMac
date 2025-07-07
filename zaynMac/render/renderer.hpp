@@ -5,6 +5,7 @@
 #include <MetalKit/MetalKit.hpp>
 #include "../zayn.hpp"
 #include "../camera.hpp"
+#include "texture.hpp"
 
 #include <simd/simd.h>
 
@@ -32,6 +33,10 @@ class Renderer
         void buildBuffers();
         void generateMandelbrotTexture( MTL::CommandBuffer* pCommandBuffer );
         void draw( MTK::View* pView );
+        
+        // Texture management functions
+        int loadTexture(const char* path);
+        Texture* getTexture(int textureId);
 
     private:
         MTL::Device* _pDevice;
@@ -46,6 +51,7 @@ class Renderer
         MTL::Buffer* _pCameraDataBuffer[kMaxFramesInFlight];
         MTL::Buffer* _pIndexBuffer;
         MTL::Buffer* _pTextureAnimationBuffer;
+        TextureManager _textureManager;
         float _angle;
         int _frame;
         dispatch_semaphore_t _semaphore;

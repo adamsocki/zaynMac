@@ -2,6 +2,11 @@
 #include "renderer.hpp"
 #include "../math/math.h"
 
+// Forward declare extern "C" functions
+extern "C" {
+    void GetGameInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount);
+}
+
 
 
 
@@ -9,6 +14,7 @@ const int Renderer::kMaxFramesInFlight = 3;
 
 Renderer::Renderer( MTL::Device* pDevice )
 : _pDevice( pDevice->retain() )
+, _textureManager( pDevice )
 , _angle ( 0.f )
 , _frame( 0 )
 , _animationIndex(0)
@@ -135,14 +141,9 @@ void Renderer::buildShaders()
             constexpr sampler s( address::repeat, filter::linear );
             half3 texel = tex.sample( s, in.texcoord ).rgb;
 
-            // assume light coming from (front-top-right)
-            float3 l = normalize(float3( 1.0, 1.0, 0.8 ));
-            float3 n = normalize( in.normal );
-
-            half ndotl = half( saturate( dot( n, l ) ) );
-
-            half3 illum = (in.color * texel * 0.1) + (in.color * texel * ndotl);
-            return half4( illum, 1.0 );
+            // Simple debug: just show the texture with minimal lighting
+            half3 result = texel * 0.8 + texel * 0.2; // Always visible
+            return half4( result, 1.0 );
         }
     )";
 
@@ -257,6 +258,7 @@ void Renderer::buildDepthStencilStates()
 
 void Renderer::buildTextures()
 {
+    // Keep the old procedural texture for now (for Mandelbrot generation)
     MTL::TextureDescriptor* pTextureDesc = MTL::TextureDescriptor::alloc()->init();
     pTextureDesc->setWidth( kTextureWidth );
     pTextureDesc->setHeight( kTextureHeight );
@@ -269,6 +271,11 @@ void Renderer::buildTextures()
     _pTexture = pTexture;
 
     pTextureDesc->release();
+    
+    // Load file-based textures using absolute paths
+    int testTextureId = loadTexture("/Users/adamsocki/dev/xcode/zaynMac/assets/textures/test_texture.png");
+    int brickTextureId = loadTexture("/Users/adamsocki/dev/xcode/zaynMac/assets/textures/brick.png");
+    printf("Test texture ID: %d, Brick texture ID: %d\n", testTextureId, brickTextureId);
 }
 
 void Renderer::buildBuffers()
@@ -379,18 +386,12 @@ void Renderer::generateMandelbrotTexture( MTL::CommandBuffer* pCommandBuffer )
 
 void Renderer::draw( MTK::View* pView )
 {
-    // ZaynUpdate() is called here in zaynAppDelegate;
     using simd::float3;
     using simd::float4;
     using simd::float4x4;
 
     NS::AutoreleasePool* pPool = NS::AutoreleasePool::alloc()->init();
     
-    // Update input system using polling
-    if (zaynMem) {
-        InputUpdatePolling(zaynMem);
-    }
-
     _frame = (_frame + 1) % Renderer::kMaxFramesInFlight;
     MTL::Buffer* pInstanceDataBuffer = _pInstanceDataBuffer[ _frame ];
 
@@ -405,139 +406,54 @@ void Renderer::draw( MTK::View* pView )
 
     shader_types::InstanceData* pInstanceData = reinterpret_cast< shader_types::InstanceData *>( pInstanceDataBuffer->contents() );
     
-    // Update scene
-    if (zaynMem && zaynMem->currentScene)
+    // Get instance data from active game mode (defined externally)
+    InstanceData gameInstances[kNumInstances];
+    int instanceCount = 0;
+    GetGameInstanceData(zaynMem, gameInstances, kNumInstances, instanceCount);
+    
+    // Convert game instance data to shader instance data
+    for (int i = 0; i < instanceCount && i < kNumInstances; i++)
     {
-        zaynMem->currentScene->Update(0.016f); // Assuming 60fps
+        // Convert mat4 to simd float4x4 (note: your mat4 is column-major)
+        pInstanceData[i].instanceTransform = simd::float4x4{
+            simd::float4{gameInstances[i].transform.m00, gameInstances[i].transform.m10, gameInstances[i].transform.m20, gameInstances[i].transform.m30},
+            simd::float4{gameInstances[i].transform.m01, gameInstances[i].transform.m11, gameInstances[i].transform.m21, gameInstances[i].transform.m31},
+            simd::float4{gameInstances[i].transform.m02, gameInstances[i].transform.m12, gameInstances[i].transform.m22, gameInstances[i].transform.m32},
+            simd::float4{gameInstances[i].transform.m03, gameInstances[i].transform.m13, gameInstances[i].transform.m23, gameInstances[i].transform.m33}
+        };
         
-        // Get instance data from scene
-        InstanceData sceneInstances[kNumInstances];
-        int instanceCount = 0;
-        zaynMem->currentScene->GetInstanceData(sceneInstances, kNumInstances, instanceCount);
+        // Convert mat3 to simd float3x3 for normal transform
+        pInstanceData[i].instanceNormalTransform = simd::float3x3{
+            simd::float3{gameInstances[i].normalTransform.m00, gameInstances[i].normalTransform.m10, gameInstances[i].normalTransform.m20},
+            simd::float3{gameInstances[i].normalTransform.m01, gameInstances[i].normalTransform.m11, gameInstances[i].normalTransform.m21},
+            simd::float3{gameInstances[i].normalTransform.m02, gameInstances[i].normalTransform.m12, gameInstances[i].normalTransform.m22}
+        };
         
-        // Convert scene instance data to shader instance data
-        for (int i = 0; i < instanceCount; i++)
-        {
-            // Convert mat4 to simd float4x4 (note: your mat4 is column-major)
-            pInstanceData[i].instanceTransform = simd::float4x4{
-                simd::float4{sceneInstances[i].transform.m00, sceneInstances[i].transform.m10, sceneInstances[i].transform.m20, sceneInstances[i].transform.m30},
-                simd::float4{sceneInstances[i].transform.m01, sceneInstances[i].transform.m11, sceneInstances[i].transform.m21, sceneInstances[i].transform.m31},
-                simd::float4{sceneInstances[i].transform.m02, sceneInstances[i].transform.m12, sceneInstances[i].transform.m22, sceneInstances[i].transform.m32},
-                simd::float4{sceneInstances[i].transform.m03, sceneInstances[i].transform.m13, sceneInstances[i].transform.m23, sceneInstances[i].transform.m33}
-            };
-            
-            // Convert mat3 to simd float3x3 for normal transform
-            pInstanceData[i].instanceNormalTransform = simd::float3x3{
-                simd::float3{sceneInstances[i].normalTransform.m00, sceneInstances[i].normalTransform.m10, sceneInstances[i].normalTransform.m20},
-                simd::float3{sceneInstances[i].normalTransform.m01, sceneInstances[i].normalTransform.m11, sceneInstances[i].normalTransform.m21},
-                simd::float3{sceneInstances[i].normalTransform.m02, sceneInstances[i].normalTransform.m12, sceneInstances[i].normalTransform.m22}
-            };
-            
-            pInstanceData[i].instanceColor = simd::float4{sceneInstances[i].color.x, sceneInstances[i].color.y, sceneInstances[i].color.z, sceneInstances[i].color.w};
-        }
-        
-        // Fill remaining instances with default data if needed
-        for (int i = instanceCount; i < kNumInstances; i++)
-        {
-            pInstanceData[i].instanceTransform = math::makeIdentity();
-            pInstanceData[i].instanceNormalTransform = simd::float3x3{
-                simd::float3{1.0f, 0.0f, 0.0f},
-                simd::float3{0.0f, 1.0f, 0.0f},
-                simd::float3{0.0f, 0.0f, 1.0f}
-            };
-            pInstanceData[i].instanceColor = simd::float4{0.0f, 0.0f, 0.0f, 0.0f};
-        }
+        pInstanceData[i].instanceColor = simd::float4{gameInstances[i].color.x, gameInstances[i].color.y, gameInstances[i].color.z, gameInstances[i].color.w};
     }
-    else
+    
+    // Fill remaining instances with invisible data if needed
+    for (int i = instanceCount; i < kNumInstances; i++)
     {
-        // Fallback to original behavior if no scene
-        const float scl = 0.2f;
-        const float scl2 = 0.9f;
-        
-        float3 objectPosition = { 0.f, 0.f, -10.f };
-
-        float4x4 rt = math::makeTranslate( objectPosition );
-        float4x4 rr1 = math::makeYRotate( -_angle );
-        float4x4 rr0 = math::makeXRotate( _angle * 0.5 );
-        float4x4 rtInv = math::makeTranslate( { -objectPosition.x, -objectPosition.y, -objectPosition.z } );
-        float4x4 fullObjectRot = rt * rr1 * rr0 * rtInv;
-
-        size_t ix = 0;
-        size_t iy = 0;
-        size_t iz = 0;
-        for ( size_t i = 0; i < kNumInstances; ++i )
-        {
-            if ( ix == kInstanceRows )
-            {
-                ix = 0;
-                iy += 1;
-            }
-            if ( iy == kInstanceRows )
-            {
-                iy = 0;
-                iz += 1;
-            }
-
-            float4x4 scale = math::makeScale( (float3){ scl, scl, scl } );
-            float4x4 zrot = math::makeZRotate( _angle * sinf((float)ix) );
-            float4x4 yrot = math::makeYRotate( _angle * cosf((float)iy));
-
-            float x = ((float)ix - (float)kInstanceRows/2.f) * (2.f * scl) + scl;
-            float y = ((float)iy - (float)kInstanceColumns/2.f) * (2.f * scl) + scl2;
-            float z = ((float)iz - (float)kInstanceDepth/2.f) * (2.f * scl2);
-            float4x4 translate = math::makeTranslate( math::add( objectPosition, { x, y, z } ) );
-
-            pInstanceData[ i ].instanceTransform = fullObjectRot * translate * yrot * zrot * scale;
-            pInstanceData[ i ].instanceNormalTransform = math::discardTranslation( pInstanceData[ i ].instanceTransform );
-
-            float iDivNumInstances = i / (float)kNumInstances;
-            float r = iDivNumInstances;
-            float g = 1.0f - r;
-            float b = sinf( M_PI * 2.0f * iDivNumInstances );
-            pInstanceData[ i ].instanceColor = (float4){ r, g, b, 1.0f };
-
-            ix += 1;
-        }
+        // Move these instances far away so they don't render
+        simd::float4x4 farAwayTransform = math::makeTranslate({1000.0f, 1000.0f, 1000.0f});
+        pInstanceData[i].instanceTransform = farAwayTransform;
+        pInstanceData[i].instanceNormalTransform = simd::float3x3{
+            simd::float3{1.0f, 0.0f, 0.0f},
+            simd::float3{0.0f, 1.0f, 0.0f},
+            simd::float3{0.0f, 0.0f, 1.0f}
+        };
+        pInstanceData[i].instanceColor = simd::float4{0.0f, 0.0f, 0.0f, 0.0f};
     }
     pInstanceDataBuffer->didModifyRange( NS::Range::Make( 0, pInstanceDataBuffer->length() ) );
 
-    // Update camera state:
-
+    // Setup camera buffer
     MTL::Buffer* pCameraDataBuffer = _pCameraDataBuffer[ _frame ];
-//    shader_types::CameraData* pCameraData = reinterpret_cast< shader_types::CameraData *>( pCameraDataBuffer->contents() );
     CameraData* pCameraData = reinterpret_cast< CameraData *>( pCameraDataBuffer->contents() );
-//    zaynMem->cameraData = reinterpret_cast< CameraData *>( pCameraDataBuffer->contents() );
     zaynMem->cameraData = pCameraData;
-    zaynMem->cameraData->perspectiveTransform = math::makePerspective( 45.f * M_PI / 180.f, 1.f, 0.03f, 500.0f ) ;
-    zaynMem->cameraData->worldTransform = math::makeIdentity();
+    zaynMem->cameraData->perspectiveTransform = math::makePerspective( 45.f * M_PI / 180.f, 1.f, 0.03f, 500.0f );
     
-    // Update camera movement based on input
-    CameraUpdateMovement(&zaynMem->camera, zaynMem, 0.016f); // Assuming 60fps
-    CameraUpdateTest(&zaynMem->camera);
-    
-    // Update city builder game logic
-    UpdateCityBuilder(zaynMem, 0.016f);
-    
-    // Update scene from grid state
-    UpdateSceneFromGrid(zaynMem);
-    
-    // Create view matrix from camera position and orientation
-    simd::float3 cameraPos = zaynMem->camera.position;
-    simd::float3 cameraTarget = cameraPos + zaynMem->camera.forward;
-    
-    // Create look-at matrix
-    simd::float3 zAxis = simd::normalize(cameraPos - cameraTarget); // Forward (towards camera)
-    simd::float3 xAxis = simd::normalize(simd::cross(zaynMem->camera.up, zAxis)); // Right
-    simd::float3 yAxis = simd::cross(zAxis, xAxis); // Up
-    
-    zaynMem->cameraData->worldTransform = simd::float4x4{
-        simd::float4{xAxis.x, yAxis.x, zAxis.x, 0.0f},
-        simd::float4{xAxis.y, yAxis.y, zAxis.y, 0.0f},
-        simd::float4{xAxis.z, yAxis.z, zAxis.z, 0.0f},
-        simd::float4{-simd::dot(xAxis, cameraPos), -simd::dot(yAxis, cameraPos), -simd::dot(zAxis, cameraPos), 1.0f}
-    };
-    
-    zaynMem->cameraData->worldNormalTransform = math::discardTranslation( zaynMem->cameraData->worldTransform );
+    // Camera transform is now set by game logic
     pCameraDataBuffer->didModifyRange( NS::Range::Make( 0, sizeof( CameraData ) ) );
 
     // Update texture:
@@ -556,7 +472,16 @@ void Renderer::draw( MTK::View* pView )
     pEnc->setVertexBuffer( pInstanceDataBuffer, /* offset */ 0, /* index */ 1 );
     pEnc->setVertexBuffer( pCameraDataBuffer, /* offset */ 0, /* index */ 2 );
 
-    pEnc->setFragmentTexture( _pTexture, /* index */ 0 );
+    // Try to use file-based texture first, fallback to Mandelbrot if not available
+    Texture* fileTexture = getTexture(1); // Assuming test_texture.png has ID 1
+    if (fileTexture && fileTexture->isValid()) {
+        printf("Binding file texture to slot 0\n");
+        pEnc->setFragmentTexture( fileTexture->getMetalTexture(), /* index */ 0 );
+    } else {
+        printf("File texture not available, using Mandelbrot texture as fallback\n");
+        // Fallback to the Mandelbrot texture if file texture isn't available
+        pEnc->setFragmentTexture( _pTexture, /* index */ 0 );
+    }
 
     pEnc->setCullMode( MTL::CullModeBack );
     pEnc->setFrontFacingWinding( MTL::Winding::WindingCounterClockwise );
@@ -572,5 +497,14 @@ void Renderer::draw( MTK::View* pView )
     pCmd->commit();
 
     pPool->release();
+}
+
+// Texture management functions
+int Renderer::loadTexture(const char* path) {
+    return _textureManager.loadTexture(path);
+}
+
+Texture* Renderer::getTexture(int textureId) {
+    return _textureManager.getTexture(textureId);
 }
 

@@ -42,7 +42,7 @@ int main( int argc, char* argv[] )
     pSharedApplication->setDelegate( &zaynDel );
     
     zaynDel.zaynMem = Zayn;
-//    zaynDel.
+    
     pSharedApplication->run();
     
     pAutoreleasePool->release();

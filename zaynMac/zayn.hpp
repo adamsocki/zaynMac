@@ -30,6 +30,9 @@ struct ZaynMemory
     
     Scene* currentScene;
     GridSystem* cityGrid;
+    
+    // Game project state
+    void* gameProjectState;  // Pointer to game-specific state structure
 };
 
 void ZaynInit(ZaynMemory* zaynMem);

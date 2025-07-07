@@ -7,6 +7,7 @@
 MyMTKViewDelegate::MyMTKViewDelegate( MTL::Device* pDevice )
 : MTK::ViewDelegate()
 , _pRenderer( new Renderer( pDevice ) )
+, _pGameLogic( nullptr )
 {
 //    _pRenderer->zaynMem = zaynMem;
 }
@@ -14,16 +15,24 @@ MyMTKViewDelegate::MyMTKViewDelegate( MTL::Device* pDevice )
 void MyMTKViewDelegate::InitViewDel()
 {
     _pRenderer->zaynMem = zaynMem;
+    _pGameLogic = new GameLogic(zaynMem);
 }
 
 
 MyMTKViewDelegate::~MyMTKViewDelegate()
 {
     delete _pRenderer;
+    delete _pGameLogic;
 }
 
 void MyMTKViewDelegate::drawInMTKView( MTK::View* pView )
 {
+    // Update game logic first
+    if (_pGameLogic) {
+        _pGameLogic->Update(0.016f); // Assuming 60fps
+    }
+    
+    // Then render
     _pRenderer->draw( pView );
 }
 

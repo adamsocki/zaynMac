@@ -10,6 +10,7 @@
 
 void InitializeGrid(GridSystem* grid, MemoryArena* arena, int32 width, int32 height, real32 tileSize)
 {
+    printf("Initializing grid: %dx%d, tileSize: %.2f\n", width, height, tileSize);
     grid->width = width;
     grid->height = height;
     grid->tileSize = tileSize;

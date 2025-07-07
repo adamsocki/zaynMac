@@ -46,7 +46,7 @@ struct Scene
         for (int i = 0; i < gameObjects.count && instanceCount < maxInstances; i++)
         {
             GameObject& obj = gameObjects[i];
-            if (obj.active && obj.mesh)
+            if (obj.active)
             {
                 // Create simple transform matrix from Transform data
                 mat4 transform = Identity4();
