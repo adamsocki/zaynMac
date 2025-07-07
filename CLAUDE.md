@@ -6,6 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a macOS Metal-based graphics application called "zaynMac" built using C++ and Apple's metal-cpp bindings. The project is a custom game engine or graphics framework that uses Metal for GPU rendering.
 
+## Coding Style
+- The code in this should be written in a way that is easy to understand and maintain
+- The could should follow functional programming principles
+- The code should attempt to use C style coding
+- The code should attempt to use C++ style coding without a lot of :: use
+
+
 ## Build System
 
 - **Xcode Project**: Use Xcode to build the application
