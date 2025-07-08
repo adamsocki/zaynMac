@@ -29,7 +29,13 @@ void MyMTKViewDelegate::drawInMTKView( MTK::View* pView )
 {
     // Update game logic first
     if (_pGameLogic) {
+        
+        
+        
         _pGameLogic->Update(0.016f); // Assuming 60fps
+        
+        
+        
     }
     
     // Then render

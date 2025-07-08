@@ -13,6 +13,8 @@
 #import "scene.hpp"
 #import "grid.hpp"
 
+#include "entity.hpp"
+#include "constants.h"
 
 struct ZaynMemory
 {
@@ -27,16 +29,20 @@ struct ZaynMemory
     InputDevice* keyboard;
 
     ZaynTime time;
+    float deltaTime;
+    float accumTime;
+    int accumFrames;
     
     Scene* currentScene;
     GridSystem* cityGrid;
     
     // Game project state
     void* gameProjectState;  // Pointer to game-specific state structure
+    
+    int instanceCount;
+    InstanceData* instanceData;
 };
 
 void ZaynInit(ZaynMemory* zaynMem);
-
-// City builder functions
-void UpdateCityBuilder(ZaynMemory* zaynMem, float deltaTime);
-void UpdateSceneFromGrid(ZaynMemory* zaynMem);
+void ZaynUpdate(ZaynMemory* zaynMem);
+void ZaynUpdateAndRender(ZaynMemory* zaynMem);

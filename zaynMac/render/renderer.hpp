@@ -3,20 +3,14 @@
 #include <Metal/Metal.hpp>
 #include <AppKit/AppKit.hpp>
 #include <MetalKit/MetalKit.hpp>
-#include "../zayn.hpp"
+//#include "../zayn.hpp"
 #include "../camera.hpp"
 #include "texture.hpp"
 
 #include <simd/simd.h>
 
-static constexpr size_t kMaxFramesInFlight = 3;
-static constexpr size_t kInstanceRows = 10;
-static constexpr size_t kInstanceColumns = 10;
-static constexpr size_t kInstanceDepth = 10;
-static constexpr uint32_t kTextureWidth = 128;
-static constexpr uint32_t kTextureHeight = 128;
 
-static constexpr size_t kNumInstances = (kInstanceRows * kInstanceColumns * kInstanceDepth);
+#include "constants.h"
 
 
 

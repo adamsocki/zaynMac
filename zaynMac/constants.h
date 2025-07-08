@@ -12,6 +12,20 @@
 #define _2PI 6.28318530718f
 #define SQRT2 1.41421356237f
 
+
+// Rendering constants
+static constexpr size_t kMaxFramesInFlight = 3;
+static constexpr size_t kInstanceRows = 10;
+static constexpr size_t kInstanceColumns = 10;
+static constexpr size_t kInstanceDepth = 10;
+static constexpr size_t kNumInstances = (kInstanceRows * kInstanceColumns *
+kInstanceDepth);
+
+// Texture constants
+static constexpr uint32_t kTextureWidth = 128;
+static constexpr uint32_t kTextureHeight = 128;
+
+
 // Game mode selection (legacy system)
 //#define GAME_MODE_CUBE_DEMO     0
 //#define GAME_MODE_CITY_BUILDER  1

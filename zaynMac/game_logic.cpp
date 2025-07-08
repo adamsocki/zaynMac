@@ -3,6 +3,7 @@
 #include "input.hpp"
 #include "camera.hpp"
 #include "constants.h"
+#include "zayn.hpp"
 
 // Include game mode headers (legacy system)
 #include "game_modes/cube_demo.hpp"
@@ -57,8 +58,13 @@ void GameLogic::Update(float deltaTime)
 {
     if (!_zaynMem) return;
     
+    // Set delta time for casette system
+    _zaynMem->deltaTime = deltaTime;
+    
     // Handle input (common to all game modes)
+    UpdateSystems(deltaTime);
     HandleInput();
+    UpdateCamera(deltaTime);
     
     // Update active game mode
     UpdateGame(_zaynMem, deltaTime);
@@ -66,6 +72,9 @@ void GameLogic::Update(float deltaTime)
     // Calculate matrices for rendering (common to all game modes)
     CalculateCameraMatrices();
     ProcessInstanceData();
+    
+    // Call casette system update and render
+    ZaynUpdateAndRender(_zaynMem);
     
     // Mark render data as updated
     _renderData.deltaTime = deltaTime;
@@ -96,22 +105,22 @@ void GameLogic::UpdateCamera(float deltaTime)
     CameraUpdateTest(&_zaynMem->camera);
 }
 
-void GameLogic::UpdateScene(float deltaTime)
-{
-    if (_zaynMem->currentScene) {
-        _zaynMem->currentScene->Update(deltaTime);
-    }
-}
+//void GameLogic::UpdateScene(float deltaTime)
+//{
+//    if (_zaynMem->currentScene) {
+//        _zaynMem->currentScene->Update(deltaTime);
+//    }
+//}
 
-void GameLogic::UpdateCityBuilder(float deltaTime)
-{
-    ::UpdateCityBuilder(_zaynMem, deltaTime);
-}
-
-void GameLogic::UpdateSceneFromGrid()
-{
-    ::UpdateSceneFromGrid(_zaynMem);
-}
+//void GameLogic::UpdateCityBuilder(float deltaTime)
+//{
+//    ::UpdateCityBuilder(_zaynMem, deltaTime);
+//}
+//
+//void GameLogic::UpdateSceneFromGrid()
+//{
+//    ::UpdateSceneFromGrid(_zaynMem);
+//}
 
 void GameLogic::CalculateCameraMatrices()
 {
@@ -157,10 +166,6 @@ extern "C" {
     
     void UpdateGame(ZaynMemory* zaynMem, float deltaTime) {
         GameUpdate(zaynMem, deltaTime);
-    }
-    
-    void GetGameInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount) {
-        GameGetInstanceData(zaynMem, instances, maxInstances, instanceCount);
     }
     
     void ShutdownGame(ZaynMemory* zaynMem) {

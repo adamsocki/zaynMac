@@ -1,11 +1,8 @@
 
 #include "renderer.hpp"
 #include "../math/math.h"
+#include "../zayn.hpp"
 
-// Forward declare extern "C" functions
-extern "C" {
-    void GetGameInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount);
-}
 
 
 
@@ -406,34 +403,38 @@ void Renderer::draw( MTK::View* pView )
 
     shader_types::InstanceData* pInstanceData = reinterpret_cast< shader_types::InstanceData *>( pInstanceDataBuffer->contents() );
     
-    // Get instance data from active game mode (defined externally)
-    InstanceData gameInstances[kNumInstances];
-    int instanceCount = 0;
-    GetGameInstanceData(zaynMem, gameInstances, kNumInstances, instanceCount);
+    
+    
+    
+    // Use pre-cached instance data from game update
+    
+    
+    
+    
     
     // Convert game instance data to shader instance data
-    for (int i = 0; i < instanceCount && i < kNumInstances; i++)
+    for (int i = 0; i < zaynMem->instanceCount && i < kNumInstances; i++)
     {
         // Convert mat4 to simd float4x4 (note: your mat4 is column-major)
         pInstanceData[i].instanceTransform = simd::float4x4{
-            simd::float4{gameInstances[i].transform.m00, gameInstances[i].transform.m10, gameInstances[i].transform.m20, gameInstances[i].transform.m30},
-            simd::float4{gameInstances[i].transform.m01, gameInstances[i].transform.m11, gameInstances[i].transform.m21, gameInstances[i].transform.m31},
-            simd::float4{gameInstances[i].transform.m02, gameInstances[i].transform.m12, gameInstances[i].transform.m22, gameInstances[i].transform.m32},
-            simd::float4{gameInstances[i].transform.m03, gameInstances[i].transform.m13, gameInstances[i].transform.m23, gameInstances[i].transform.m33}
+            simd::float4{zaynMem->instanceData[i].transform.m00, zaynMem->instanceData[i].transform.m10, zaynMem->instanceData[i].transform.m20, zaynMem->instanceData[i].transform.m30},
+            simd::float4{zaynMem->instanceData[i].transform.m01, zaynMem->instanceData[i].transform.m11, zaynMem->instanceData[i].transform.m21, zaynMem->instanceData[i].transform.m31},
+            simd::float4{zaynMem->instanceData[i].transform.m02, zaynMem->instanceData[i].transform.m12, zaynMem->instanceData[i].transform.m22, zaynMem->instanceData[i].transform.m32},
+            simd::float4{zaynMem->instanceData[i].transform.m03, zaynMem->instanceData[i].transform.m13, zaynMem->instanceData[i].transform.m23, zaynMem->instanceData[i].transform.m33}
         };
         
         // Convert mat3 to simd float3x3 for normal transform
         pInstanceData[i].instanceNormalTransform = simd::float3x3{
-            simd::float3{gameInstances[i].normalTransform.m00, gameInstances[i].normalTransform.m10, gameInstances[i].normalTransform.m20},
-            simd::float3{gameInstances[i].normalTransform.m01, gameInstances[i].normalTransform.m11, gameInstances[i].normalTransform.m21},
-            simd::float3{gameInstances[i].normalTransform.m02, gameInstances[i].normalTransform.m12, gameInstances[i].normalTransform.m22}
+            simd::float3{zaynMem->instanceData[i].normalTransform.m00, zaynMem->instanceData[i].normalTransform.m10, zaynMem->instanceData[i].normalTransform.m20},
+            simd::float3{zaynMem->instanceData[i].normalTransform.m01, zaynMem->instanceData[i].normalTransform.m11, zaynMem->instanceData[i].normalTransform.m21},
+            simd::float3{zaynMem->instanceData[i].normalTransform.m02, zaynMem->instanceData[i].normalTransform.m12, zaynMem->instanceData[i].normalTransform.m22}
         };
         
-        pInstanceData[i].instanceColor = simd::float4{gameInstances[i].color.x, gameInstances[i].color.y, gameInstances[i].color.z, gameInstances[i].color.w};
+        pInstanceData[i].instanceColor = simd::float4{zaynMem->instanceData[i].color.x, zaynMem->instanceData[i].color.y, zaynMem->instanceData[i].color.z, zaynMem->instanceData[i].color.w};
     }
     
     // Fill remaining instances with invisible data if needed
-    for (int i = instanceCount; i < kNumInstances; i++)
+    for (int i = zaynMem->instanceCount; i < kNumInstances; i++)
     {
         // Move these instances far away so they don't render
         simd::float4x4 farAwayTransform = math::makeTranslate({1000.0f, 1000.0f, 1000.0f});

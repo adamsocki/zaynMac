@@ -44,8 +44,8 @@ namespace CubeDemo {
         state->angle += deltaTime * 0.5f; // Slower rotation
         
         // Update camera movement based on input
-        CameraUpdateMovement(&zaynMem->camera, zaynMem, deltaTime);
-        CameraUpdateTest(&zaynMem->camera);
+        //CameraUpdateMovement(&zaynMem->camera, zaynMem, deltaTime);
+       // CameraUpdateTest(&zaynMem->camera);
     }
     
     void GetInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount) {

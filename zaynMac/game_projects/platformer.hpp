@@ -39,6 +39,7 @@ namespace Platformer {
     void GetInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount);
     void Shutdown(ZaynMemory* zaynMem);
     
+    
     // Internal functions
     PlatformerState* GetState(ZaynMemory* zaynMem);
     void UpdatePlayer(PlatformerState* state, ZaynMemory* zaynMem, float deltaTime);

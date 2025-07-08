@@ -12,6 +12,11 @@ struct RenderData
     float deltaTime;
 };
 
+struct GameLogic_struct
+{
+    
+};
+
 class GameLogic
 {
 public:
@@ -24,7 +29,7 @@ public:
     void HandleInput();
     void UpdateSystems(float deltaTime);
     void UpdateCamera(float deltaTime);
-    void UpdateScene(float deltaTime);
+//    void UpdateScene(float deltaTime);
     void UpdateCityBuilder(float deltaTime);
     void UpdateSceneFromGrid();
     

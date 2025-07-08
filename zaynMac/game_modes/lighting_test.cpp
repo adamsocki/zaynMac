@@ -34,8 +34,8 @@ namespace LightingTest {
         state->time += deltaTime;
         
         // Update camera movement based on input
-        CameraUpdateMovement(&zaynMem->camera, zaynMem, deltaTime);
-        CameraUpdateTest(&zaynMem->camera);
+        //CameraUpdateMovement(&zaynMem->camera, zaynMem, deltaTime);
+       // CameraUpdateTest(&zaynMem->camera);
     }
     
     void GetInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount) {

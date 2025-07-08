@@ -9,22 +9,14 @@
 #include "constants.h"
 #include <iostream>
 
+#include "casette/casette_system.h"
+
 // External game mode functions
 extern "C" void InitializeGame(ZaynMemory* zaynMem);
 
 void ZaynInit(ZaynMemory* zaynMem)
 {
-    // Display which game mode is active
-    #if ACTIVE_GAME_MODE == GAME_MODE_CUBE_DEMO
-        std::cout << "Initializing Zayn Engine - Cube Demo Mode" << std::endl;
-    #elif ACTIVE_GAME_MODE == GAME_MODE_CITY_BUILDER
-        std::cout << "Initializing Zayn Engine - City Builder Mode" << std::endl;
-    #elif ACTIVE_GAME_MODE == GAME_MODE_LIGHTING_TEST
-        std::cout << "Initializing Zayn Engine - Lighting Test Mode" << std::endl;
-    #else
-        std::cout << "Initializing Zayn Engine - Unknown Mode" << std::endl;
-    #endif
-    
+
     // Initialize core engine systems
     AllocateMemoryArena(&zaynMem->permanentMemArena, Megabytes(256));
     AllocateMemoryArena(&zaynMem->frameMemArena, Megabytes(32));
@@ -41,16 +33,41 @@ void ZaynInit(ZaynMemory* zaynMem)
     AllocateInputDevice(zaynMem->inputManager.mouse, InputDeviceType_Mouse, MouseButton_Count, 2); // 2 analog for x,y
     
     // Initialize game mode-specific systems
+    zaynMem->instanceCount = 0;
+    zaynMem->instanceData = (InstanceData*)PushSizeMemoryArena(&zaynMem->permanentMemArena, kNumInstances * sizeof(InstanceData));
+    for (int i = 0; i < kNumInstances; i++) {
+        zaynMem->instanceData[i] = {}; // Zero-initialize each InstanceData
+    }
+
     InitializeGame(zaynMem);
+    
+    // Initialize casette system
+    InitCasette();
 }
 
-// City builder functions (temporary implementations)
-void UpdateCityBuilder(ZaynMemory* zaynMem, float deltaTime) {
-    // Placeholder implementation
+void ZaynUpdate(ZaynMemory* zaynMem)
+{
+    // Core engine update logic
 }
 
-void UpdateSceneFromGrid(ZaynMemory* zaynMem) {
-    // Placeholder implementation
+void ZaynUpdateAndRender(ZaynMemory* zaynMem)
+{
+    // Update frame timing
+    zaynMem->accumTime += zaynMem->deltaTime;
+    zaynMem->accumFrames++;
+    
+    if (zaynMem->accumTime >= 1.0f)
+    {
+        float avgDt = zaynMem->accumTime / zaynMem->accumFrames;
+        
+        // Update window title with FPS
+        // TODO: Implement window title update for macOS
+        
+        zaynMem->accumTime -= 1.0f;
+        zaynMem->accumFrames = 0;
+    }
+    
+    // Update and render casette
+    UpdateAndRenderCasette();
 }
-
 

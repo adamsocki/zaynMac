@@ -61,6 +61,8 @@ namespace Platformer {
     }
     
     void Update(ZaynMemory* zaynMem, float deltaTime) {
+        
+        // UPDATE LOGIC
         PlatformerState* state = GetState(zaynMem);
         if (!state || !state->initialized) return;
         
@@ -76,9 +78,12 @@ namespace Platformer {
         CheckCollisions(state);
         
         // Update camera to follow player
-        simd::float3 targetPos = state->playerPosition;
-        targetPos.z = 10.0f;
-        zaynMem->camera.position = targetPos;
+//        UpdateCamera(state, zaynMem);
+        
+        
+        
+        // UPDATE RENDER
+        
     }
     
     void GetInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount) {
@@ -193,6 +198,13 @@ namespace Platformer {
             }
         }
     }
+
+    void UpdateCamera(PlatformerState* state, ZaynMemory* zaynMem)
+    {
+        simd::float3 targetPos = state->playerPosition;
+        targetPos.z = 10.0f;
+        zaynMem->camera.position = targetPos;
+    }
     
     void GeneratePlatforms(PlatformerState* state) {
         state->platformCount = 8;
@@ -217,6 +229,11 @@ extern "C" {
     
     void GameUpdate(ZaynMemory* zaynMem, float deltaTime) {
         Platformer::Update(zaynMem, deltaTime);
+        
+//        Platformer::UpdateCamera();
+        
+        zaynMem->instanceCount = 0; // Reset count
+        Platformer::GetInstanceData(zaynMem, zaynMem->instanceData, kNumInstances, zaynMem->instanceCount);
     }
     
     void GameGetInstanceData(ZaynMemory* zaynMem, InstanceData* instances, int maxInstances, int& instanceCount) {
